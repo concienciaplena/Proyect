@@ -3,409 +3,458 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Consciencia Plena | Psicóloga Sonia Vargas</title>
+  <title>Dashboard | Consciencia Plena</title>
   
   <link rel="icon" type="image/png" href="logo.jpg">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="dark-mode">
 
-  <!-- Modal Aviso de Privacidad y Derechos ARCO -->
+  <!-- MODAL INICIAL DE PRIVACIDAD, COOKIES Y DERECHOS ARCO -->
   <div id="privacyModal" class="modal-overlay" style="display: none;">
-    <div class="modal-glass-card">
+    <div class="modal-glass-card privacy-modal-card">
       <div class="modal-header">
-        <span class="modal-icon"></span>
-        <h3>Aviso de Privacidad y Derechos ARCO</h3>
+        <div>
+          <span class="badge" style="margin-bottom: 0.4rem;">Protección de Datos & Legal</span>
+          <h3>Aviso de Privacidad, Cookies y Derechos ARCO</h3>
+        </div>
       </div>
-      <div class="modal-body">
-        <p>En <strong>Consciencia Plena</strong>, la confidencialidad y el resguardo de tus datos personales y sensibles son nuestra máxima prioridad, conforme a la legislación aplicable en materia de protección de datos personales.</p>
-        <p>Los datos que proporciones (incluyendo respuestas a cuestionarios y solicitudes de citas) son estrictamente confidenciales y utilizados únicamente con fines terapéuticos y de orientación.</p>
-        <div class="arco-badge-box">
-          <strong>Tus Derechos ARCO:</strong>
-          <ul>
-            <li><strong>A</strong>cceso: Conocer tus datos y el tratamiento que se les da.</li>
-            <li><strong>R</strong>ectificación: Solicitar la corrección de información desactualizada o inexacta.</li>
-            <li><strong>C</strong>ancelación: Pedir la eliminación de tus registros cuando lo consideres.</li>
-            <li><strong>O</strong>posición: Oponerte al tratamiento de tus datos para fines específicos.</li>
+      <div class="modal-body" style="font-size: 0.88rem; line-height: 1.6;">
+        <p>Bienvenido(a) a <strong>Consciencia Plena</strong>. Para ofrecerte una experiencia personalizada y segura, utilizamos tecnologías de almacenamiento local (cookies y <code>localStorage</code>).</p>
+        
+        <div class="legal-box" style="margin: 1rem 0; padding: 0.9rem; border-radius: 14px;">
+          <strong style="color: var(--text-main);">Cumplimiento de la Ley ARCO:</strong>
+          <p style="margin-top: 0.3rem;">De acuerdo con la legislación sobre protección de datos personales, tienes derecho en todo momento a ejercer tus derechos <strong>ARCO</strong>:</p>
+          <ul style="margin-left: 1.2rem; margin-top: 0.4rem;">
+            <li><strong>Acceso:</strong> Conocer los datos que mantenemos registrados.</li>
+            <li><strong>Rectificación:</strong> Solicitar la corrección de tu información.</li>
+            <li><strong>Cancelación:</strong> Solicitar la eliminación de tus registros de nuestras bases.</li>
+            <li><strong>Oposición:</strong> Oponerte al tratamiento de tus datos para fines específicos.</li>
           </ul>
         </div>
-        <p class="modal-note">Puedes ejercer tus derechos ARCO en cualquier momento mediante comunicación directa con la psicóloga.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="btnAcceptPrivacy" class="btn btn-primary btn-block">He leído y acepto los términos</button>
+
+        <p>Al hacer clic en el botón a continuación, manifiestas tu conformidad con la recolección responsable de datos para el agendamiento de citas y la experiencia dentro del sitio.</p>
+        
+        <button type="button" id="btnAcceptPrivacy" class="btn btn-primary btn-block" style="margin-top: 1.4rem; padding: 0.85rem;">Aceptar y Continuar</button>
       </div>
     </div>
   </div>
 
-  <!-- Navegación Superior -->
-  <header>
-    <nav class="navbar">
-      <a href="#inicio" class="brand-logo">
-        <img src="logo.jpg" alt="Logotipo Consciencia Plena" class="nav-logo-img">
-        <span>Consciencia Plena | Psicologia</span>
-      </a>
-      
-      <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#inicio" class="nav-item">Inicio</a></li>
-        <li><a href="#sobre-mi" class="nav-item">Psicóloga Sonia</a></li>
-        <li><a href="#servicios" class="nav-item">Servicios</a></li>
-        <li><a href="#noticias" class="nav-item">Salud Mental</a></li>
-        <li><a href="#evaluacion" class="nav-item">Test Emocional</a></li>
-        <li>
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=concienciaplena.consultas@gmail.com&su=Solicitud%20de%20Cita%20-%20Consciencia%20Plena&body=Hola%20Psic.%20Sonia,%20me%20gustar%C3%ADa%20agendar%20una%20consulta." target="_blank" rel="noopener noreferrer" class="btn-cita">
-            ✉ Agendar Cita
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- Hero Section -->
-  <section id="inicio" class="hero">
-    <div class="container hero-container">
-      <span class="hero-badge">Atención Psicológica Profesional en Línea</span>
-      <h1>Un espacio seguro para entender lo que sientes y transformar tu bienestar</h1>
-      <p>Integrando herramientas prácticas del conductualismo y la calidez del humanismo para acompañarte a tu propio ritmo.</p>
-      
-      <div class="hero-actions">
-        <a href="#evaluacion" class="btn btn-primary">Realizar Test Inicial</a>
-        <a href="#sobre-mi" class="btn btn-secondary">Conocer a la Especialista</a>
-      </div>
-
-      <div class="hero-card-preview">
-        <div class="logo-preview-box">
-          <img src="logo.jpg" alt="Logotipo Sonia Vargas" class="hero-logo-img">
+  <!-- MODAL LECTURA COMPLETA DE NOTICIA -->
+  <div id="newsDetailModal" class="modal-overlay" style="display: none;">
+    <div class="modal-glass-card news-modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="badge" id="modalNewsCategory">Categoría</span>
+          <h3 id="modalNewsTitle" style="margin-top: 0.5rem;">Título</h3>
+          <small id="modalNewsSource" class="text-muted">Fuente</small>
         </div>
-        <h3>Psic. Sonia Vargas</h3>
-        <p class="role">Terapia Individual & Pareja • Duelo & Ansiedad</p>
+        <button type="button" id="closeNewsModal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="margin-top: 1rem;">
+        <p id="modalNewsBody" style="line-height: 1.7; font-size: 0.95rem;"></p>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Módulo 1: Perfil Profesional -->
-  <section id="sobre-mi" class="section section-about">
-    <div class="container">
-      <div class="section-title-wrap">
-        <h2>Perfil Profesional & Filosofía</h2>
-        <p>Acompañamiento cercano, adaptativo y libre de terapias rígidas</p>
+  <!-- MODAL UNIFICADO DE ADMINISTRACIÓN -->
+  <div id="adminPanelModal" class="modal-overlay" style="display: none;">
+    <div class="modal-glass-card">
+      <div class="modal-header">
+        <h3>⚙️ Panel de Administración</h3>
+        <button type="button" id="closeAdminPanelModal" class="close-btn">&times;</button>
       </div>
-
-      <div class="about-grid">
-        <div class="about-card">
-          <div class="about-icon"></div>
-          <h3>Misión</h3>
-          <p>Acompañarte en tu proceso personal a través de terapia en línea, con un enfoque cercano, profesional y totalmente adaptado a ti. Integro herramientas del conductualismo y el humanismo para ayudarte a entender lo que te pasa, fortalecer tus áreas de oportunidad y desarrollar habilidades que te permitan sentirte más seguro(a) y en control de tu vida.</p>
+      <div class="modal-body">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+          <button type="button" id="tabAdminNews" class="btn btn-primary" style="flex:1; font-size: 0.85rem;">Publicar Noticia</button>
+          <button type="button" id="tabAdminExcel" class="btn btn-secondary" style="flex:1; font-size: 0.85rem;">Descargar Reportes</button>
         </div>
 
-        <div class="about-card">
-          <div class="about-icon"></div>
-          <h3>Visión</h3>
-          <p>Ser un espacio terapéutico en línea en el que las personas se sientan escuchadas, comprendidas y capaces de generar cambios reales en su vida. Busco que cada consultante descubra su propio potencial, fortalezca su confianza y construya una vida más plena y auténtica.</p>
+        <div id="sectionAdminNews">
+          <form id="addNewsForm">
+            <input type="text" id="adminNewsCat" placeholder="Categoría (Ej. Bienestar, Pareja)" required class="input-field">
+            <input type="text" id="adminNewsTitle" placeholder="Título de la publicación" required class="input-field" style="margin-top:0.8rem;">
+            <input type="text" id="adminNewsSource" placeholder="Fuente / Autor" required class="input-field" style="margin-top:0.8rem;">
+            <textarea id="adminNewsBody" rows="4" placeholder="Redacta el contenido de la noticia..." required class="input-field" style="margin-top:0.8rem;"></textarea>
+            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.2rem;">Publicar Noticia</button>
+          </form>
         </div>
 
-        <div class="about-card philosophy-card">
-          <div class="about-icon"></div>
-          <h3>Filosofía Terapéutica</h3>
-          <p class="quote">"Cada persona es única, por eso cada proceso también lo es."</p>
-          <p>Mi enfoque es flexible: combino técnicas prácticas para trabajar conductas con una mirada humana que valora tu historia, tus emociones y tu ritmo. Mi objetivo es acompañarte a:</p>
-          <ul class="checklist">
-            <li>Fortalecer tus debilidades y reconocer tus fortalezas.</li>
-            <li>Desarrollar seguridad en ti mismo(a) y ayudarte a creer en ti.</li>
-            <li>Alcanzar el cambio con las herramientas correctas.</li>
-          </ul>
+        <div id="sectionAdminExcel" style="display: none;">
+          <p class="text-muted text-sm" style="margin-bottom: 1rem;">Exporta los registros estructurados de la plataforma:</p>
+          <div class="flex-col">
+            <button type="button" id="btnExportCitas" class="btn btn-secondary btn-block">Reporte de Citas (.CSV)</button>
+            <button type="button" id="btnExportTest" class="btn btn-secondary btn-block">Resultados de Test (.CSV)</button>
+            <button type="button" id="btnExportBuzon" class="btn btn-secondary btn-block">Mensajes del Buzón (.CSV)</button>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Módulo 2: Servicios -->
-  <section id="servicios" class="section section-services">
-    <div class="container">
-      <div class="section-title-wrap">
-        <h2>Áreas de Atención Psicológica</h2>
-        <p>Espacios diseñados para abordar tus necesidades con empatía y rigor profesional</p>
+  <!-- MODAL AGENDAR CITA -->
+  <div id="bookingModal" class="modal-overlay" style="display: none;">
+    <div class="modal-glass-card booking-modal-card">
+      <div class="modal-header">
+        <div>
+          <h3>Agendar Cita</h3>
+          <p style="font-size: 0.85rem;" class="text-muted">Lunes a Viernes de 9:00 a 21:00 hrs.</p>
+        </div>
+        <button type="button" id="closeBookingModal" class="close-btn">&times;</button>
       </div>
-
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon"></div>
-          <h3>Terapia Individual</h3>
-          <p>Un espacio confidencial para explorar tus emociones, mejorar tu autoestima, superar bloqueos personales y potenciar tu crecimiento con herramientas prácticas.</p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon"></div>
-          <h3>Terapia de Pareja</h3>
-          <p>Orientada a mejorar la comunicación, resolver dinámicas de conflicto, reconstruir la confianza o transitar acuerdos desde el respeto mutuo.</p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon"></div>
-          <h3>Acompañamiento en Duelo</h3>
-          <p>Soporte compasivo y estructurado para transitar pérdidas significativas (rupturas, fallecimientos o cambios de vida trascendentales).</p>
-        </div>
-
-        <div class="service-card">
-          <div class="service-icon"></div>
-          <h3>Ansiedad y Depresión</h3>
-          <p>Intervenciones cognitivo-conductuales para identificar patrones de pensamiento, reducir la sobrecarga mental y recuperar el bienestar cotidiano.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Módulo 3: Noticias -->
-  <section id="noticias" class="news-section">
-    <div class="section-title-wrap">
-      <h2 class="news-section-title">Noticias y Contenido Relevante</h2>
-      <p>Artículos y fuentes oficiales para la concientización y cuidado de la salud mental[cite: 1]</p>
-    </div>
-
-    <div class="news-card-container" id="newsCardContainer">
-      <div class="news-content" id="newsContent">
-        <div class="news-badge-container">
-          <span class="category-badge" id="newsCategory">Prevención</span>
-          <span class="source-badge" id="newsSource">Fuente</span>
-        </div>
-        
-        <h3 class="news-title">
-          <a href="#" id="newsLink" target="_blank" rel="noopener noreferrer">Título de la noticia</a>
-        </h3>
-        
-        <p class="news-summary" id="newsSummary">Resumen de la noticia...</p>
-
-        <div class="news-action-link">
-          <a href="#" id="newsBtnLink" target="_blank" rel="noopener noreferrer" class="read-more-btn">
-            Leer artículo completo ↗
-          </a>
-        </div>
-      </div>
-
-      <div>
-        <div class="slider-controls">
-          <button type="button" class="btn-nav" id="btnPrev" title="Anterior">&#10094;</button>
-          
-          <div class="indicators" id="indicatorsContainer"></div>
-
-          <button type="button" class="btn-nav" id="btnNext" title="Siguiente">&#10095;</button>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Módulo 4: Test Emocional -->
-  <section id="evaluacion" class="section section-quiz">
-    <div class="container">
-      
-      <div class="quiz-intro-card" id="quizIntroCard">
-        <div class="quiz-intro-icon">✨</div>
-        <h2>¿Te gustaría realizar un pequeño test para conocerte?</h2>
-        <p>Tómate un par de minutos para reflexionar sobre tu bienestar en las últimas dos semanas a través de 15 breves preguntas. Es completamente anónimo y confidencial.</p>
-        <button type="button" id="btnStartQuiz" class="btn btn-primary">Comenzar Evaluación Inicial</button>
-      </div>
-
-      <div class="quiz-box" id="quizFormContainer" style="display: none;">
-        <div class="section-title-wrap">
-          <h2>Test de Autoevaluación Emocional</h2>
-          <p>Selecciona con total sinceridad la opción que mejor represente tu experiencia reciente.</p>
-        </div>
-
-        <form id="quizForm">
-          <div class="question-block">
-            <p class="question-title">1. ¿Con qué frecuencia te resulta difícil relajarte al terminar el día?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q1" value="0" required> Nunca</label>
-              <label><input type="radio" name="q1" value="1"> Raras veces</label>
-              <label><input type="radio" name="q1" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q1" value="3"> Casi siempre</label>
+      <div class="modal-body">
+        <form id="bookingForm">
+          <div class="grid-2">
+            <div>
+              <label>Fecha (L-V):</label>
+              <input type="date" id="bookingDate" required class="input-field">
+              <div id="trafficLightBadge" class="traffic-pill" style="display:none;"></div>
+            </div>
+            <div>
+              <label>Horario disponible:</label>
+              <select id="bookingTime" required class="input-field">
+                <option value="">-- Selecciona fecha --</option>
+              </select>
             </div>
           </div>
-
-          <div class="question-block">
-            <p class="question-title">2. ¿Has experimentado falta de interés o disfrute en actividades habituales?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q2" value="0" required> Nunca</label>
-              <label><input type="radio" name="q2" value="1"> Raras veces</label>
-              <label><input type="radio" name="q2" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q2" value="3"> Casi siempre</label>
-            </div>
+          <div class="grid-2" style="margin-top:1rem;">
+            <input type="text" id="clientName" placeholder="Nombre completo" required class="input-field">
+            <input type="email" id="clientEmail" placeholder="Correo electrónico" required class="input-field">
           </div>
-
-          <div class="question-block">
-            <p class="question-title">3. ¿Sientes que tus horarios de sueño o descanso se han alterado por preocupaciones?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q3" value="0" required> Nunca</label>
-              <label><input type="radio" name="q3" value="1"> Raras veces</label>
-              <label><input type="radio" name="q3" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q3" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">4. ¿Experimentas tensión muscular, fatiga constante o dolor de cabeza sin causa médica clara?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q4" value="0" required> Nunca</label>
-              <label><input type="radio" name="q4" value="1"> Raras veces</label>
-              <label><input type="radio" name="q4" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q4" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">5. ¿Te cuesta concentrarte en tus deberes escolares, laborales o cotidianos?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q5" value="0" required> Nunca</label>
-              <label><input type="radio" name="q5" value="1"> Raras veces</label>
-              <label><input type="radio" name="q5" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q5" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">6. ¿Sientes incertidumbre, temor o agobio respecto al porvenir?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q6" value="0" required> Nunca</label>
-              <label><input type="radio" name="q6" value="1"> Raras veces</label>
-              <label><input type="radio" name="q6" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q6" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">7. ¿Tiendes a aislarte de tus amigos, familia o círculo cercano?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q7" value="0" required> Nunca</label>
-              <label><input type="radio" name="q7" value="1"> Raras veces</label>
-              <label><input type="radio" name="q7" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q7" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">8. ¿Has sentido irritabilidad, impaciencia o enojo con mayor facilidad?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q8" value="0" required> Nunca</label>
-              <label><input type="radio" name="q8" value="1"> Raras veces</label>
-              <label><input type="radio" name="q8" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q8" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">9. ¿Sientes que tus responsabilidades rebasan tu capacidad para gestionarlas?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q9" value="0" required> Nunca</label>
-              <label><input type="radio" name="q9" value="1"> Raras veces</label>
-              <label><input type="radio" name="q9" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q9" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">10. ¿Tienes pensamientos de reproche continuo hacia ti mismo(a)?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q10" value="0" required> Nunca</label>
-              <label><input type="radio" name="q10" value="1"> Raras veces</label>
-              <label><input type="radio" name="q10" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q10" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">11. ¿Has experimentado cambios abruptos en tus hábitos de apetito?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q11" value="0" required> Nunca</label>
-              <label><input type="radio" name="q11" value="1"> Raras veces</label>
-              <label><input type="radio" name="q11" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q11" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">12. ¿Sientes que te cuesta tomar decisiones, incluso las más sencillas?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q12" value="0" required> Nunca</label>
-              <label><input type="radio" name="q12" value="1"> Raras veces</label>
-              <label><input type="radio" name="q12" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q12" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">13. ¿Te sientes desmotivado(a) o con sensación de vacío emocional?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q13" value="0" required> Nunca</label>
-              <label><input type="radio" name="q13" value="1"> Raras veces</label>
-              <label><input type="radio" name="q13" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q13" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">14. ¿Te resulta complicado expresar lo que sientes a quienes te rodean?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q14" value="0" required> Nunca</label>
-              <label><input type="radio" name="q14" value="1"> Raras veces</label>
-              <label><input type="radio" name="q14" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q14" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <div class="question-block">
-            <p class="question-title">15. ¿Consideras que contar con un espacio terapéutico profesional te brindaría claridad?</p>
-            <div class="options-group">
-              <label><input type="radio" name="q15" value="0" required> Nunca</label>
-              <label><input type="radio" name="q15" value="1"> Raras veces</label>
-              <label><input type="radio" name="q15" value="2"> Con frecuencia</label>
-              <label><input type="radio" name="q15" value="3"> Casi siempre</label>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block">Calcular Resultado Inicial</button>
+          <textarea id="bookingNotes" rows="2" placeholder="Motivo de consulta..." class="input-field" style="margin-top:1rem;"></textarea>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.5rem;">Confirmar Reserva</button>
         </form>
+        <div id="bookingSuccess" class="result-box" style="display: none;">
+          <h3 id="successTitle">Cita Agendada</h3>
+          <p id="successDetails"></p>
+          <button type="button" id="closeSuccessBtn" class="btn btn-primary">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <div id="quizResult" class="result-container" style="display: none;">
-          <div class="result-badge" id="resultLevelBadge">Nivel</div>
-          <h3 id="resultTitle">Resultado</h3>
-          <p id="resultFeedback">Retroalimentación...</p>
-          <div class="result-actions">
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=concienciaplena.consultas@gmail.com&su=Solicitud%20de%20Cita%20-%20Consciencia%20Plena&body=Hola%20Psic.%20Sonia,%20me%20gustar%C3%ADa%20agendar%20una%20consulta." target="_blank" class="btn btn-primary">Agendar Consulta con Sonia</a>
-            <button type="button" id="btnResetQuiz" class="btn btn-secondary">Repetir Evaluación</button>
+  <!-- MODAL MIS CITAS -->
+  <div id="manageBookingModal" class="modal-overlay" style="display: none;">
+    <div class="modal-glass-card">
+      <div class="modal-header">
+        <h3>Mis Citas</h3>
+        <button type="button" id="closeManageModal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="email" id="searchBookingEmail" placeholder="Tu correo registrado" class="input-field">
+        <button type="button" id="btnSearchBooking" class="btn btn-secondary btn-block" style="margin-top: 0.8rem;">Buscar Citas</button>
+        <div id="userBookingsList" style="margin-top: 1.2rem;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL TEST EMOCIONALES CON RESULTADOS DIDÁCTICOS Y EMPÁTICOS -->
+  <div id="quizModal" class="modal-overlay" style="display: none;">
+    <div class="modal-glass-card quiz-modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 id="quizModalTitle">Cuestionario</h3>
+        </div>
+        <button type="button" id="closeQuizModal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="quizForm">
+          <div class="grid-2" style="margin-bottom:1rem;">
+            <input type="text" id="quizUserName" placeholder="Nombre (Opcional)" class="input-field">
+            <input type="email" id="quizUserEmail" placeholder="Correo (Opcional)" class="input-field">
+          </div>
+          <div id="questionsWrapper"></div>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.5rem;">Calcular Resultado</button>
+        </form>
+        
+        <!-- RESULTADO CON RETROALIMENTACIÓN COMPLETA Y CONSEJO TERAPÉUTICO -->
+        <div id="quizResult" class="result-box" style="display: none;">
+          <div class="result-header-wrapper">
+            <span class="badge" id="resultLevelBadge">Nivel</span>
+            <span id="resultScorePill" class="score-pill">Puntaje: 0/15</span>
+          </div>
+          
+          <h3 id="resultTitle" style="margin-top: 0.8rem; font-size: 1.3rem;">Resultado de tu Evaluación</h3>
+          
+          <div class="feedback-card">
+            <span id="resultIcon" class="result-emoji-icon"></span>
+            <p id="resultFeedback" class="feedback-text"></p>
+          </div>
+
+          <div class="result-recommendation">
+            <p class="text-muted text-sm"><strong>Recomendación Terapéutica:</strong> Si deseas profundizar en estos resultados con orientación profesional guiada por la Psic. Sonia Vargas, puedes agendar tu sesión a continuación.</p>
+          </div>
+
+          <button type="button" class="btn btn-primary open-booking-btn" style="margin-top: 1.2rem;">Agendar Cita con tus Resultados</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYOUT PRINCIPAL DASHBOARD -->
+  <div class="dashboard-layout">
+    
+    <!-- Sidebar Vertical -->
+    <aside class="sidebar">
+      <div class="logo-wrapper">
+        <button type="button" id="logoInteractiveBtn" class="logo-btn" title="Consciencia Plena">
+          <img src="logo.jpg" alt="Logo" id="logoImg">
+        </button>
+        <div id="adminGearContainer" class="gear-hidden">
+          <button id="btnOpenAdminGear" class="btn-icon gear-btn" title="Panel de Administración">⚙️</button>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-target="view-inicio"><span class="icon">🏠</span> Inicio</button>
+        <button class="nav-item" data-target="view-servicios"><span class="icon">🛋️</span> Servicios</button>
+        <button class="nav-item" data-target="view-test"><span class="icon">📋</span> Test</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="themeToggleBtn" class="btn-icon" title="Cambiar tema">🌙</button>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div>
+          <h2 id="topbarTitle">¡Hola, bienvenido(a)!</h2>
+          <p class="text-muted" id="topbarSub">Explora herramientas didácticas para tu bienestar mental.</p>
+        </div>
+      </header>
+
+      <!-- VISTA 1: INICIO -->
+      <div id="view-inicio" class="page-view active">
+        <div class="dashboard-grid">
+          
+          <!-- Banner Hero -->
+          <div class="dash-card card-hero span-2">
+            <div class="hero-content">
+              <span class="badge" style="background: rgba(255,255,255,0.15); color: #fff; margin-bottom: 0.5rem;">Enfoque Integrativo</span>
+              <h3>Espacio seguro y profesional</h3>
+              <p style="margin-top: 0.5rem; max-width: 90%;">Terapia individual, de pareja y acompañamiento en duelo. Integramos herramientas conductuales y humanistas adaptadas a tu propio ritmo.</p>
+            </div>
+            <div class="hero-graphic">
+              <div class="glowing-orb"></div>
+            </div>
+          </div>
+
+          <!-- Perfil Sonia Vargas -->
+          <div class="dash-card card-profile">
+            <div class="profile-header">
+              <img src="logo.jpg" alt="Sonia" class="profile-img">
+              <div>
+                <h4 style="font-size: 1.1rem;">Psic. Sonia Vargas</h4>
+                <p class="badge traffic-green" style="margin-top: 4px;">Agenda Abierta</p>
+              </div>
+            </div>
+            <div class="profile-actions">
+              <button class="btn btn-primary btn-block open-booking-btn">Agendar Cita</button>
+              <button id="btnOpenManageBooking" class="btn btn-secondary btn-block" style="margin-top: 0.6rem;">Mis Citas</button>
+            </div>
+          </div>
+
+          <!-- Check-In Emocional Didáctico -->
+          <div class="dash-card span-2 card-interactive">
+            <div class="card-header-flex" style="margin-bottom: 0.5rem;">
+              <h3 class="card-title" style="margin-bottom: 0;">Check-In Emocional Didáctico</h3>
+              <small class="text-muted">¿Cómo te sientes hoy?</small>
+            </div>
+            <p class="text-muted text-sm" style="margin-bottom: 1rem;">Haz clic en tu estado de ánimo para recibir una recomendación terapéutica inmediata:</p>
+            
+            <div class="mood-selector">
+              <button class="mood-btn" data-mood="tranquilo">Tranquilo(a)</button>
+              <button class="mood-btn" data-mood="ansioso">Ansioso(a)</button>
+              <button class="mood-btn" data-mood="triste">Triste</button>
+              <button class="mood-btn" data-mood="energia">Con energía</button>
+              <button class="mood-btn" data-mood="abrumado">Abrumado(a)</button>
+            </div>
+
+            <div id="moodFeedback" class="mood-feedback-box" style="display: none;">
+              <div class="mood-feedback-content">
+                <span id="moodIcon" style="font-size: 1.5rem;"></span>
+                <div>
+                  <strong id="moodTitle">Tip Didáctico:</strong>
+                  <p id="moodText" class="text-muted text-sm" style="margin-top: 0.2rem;"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reflexión Terapéutica Diaria -->
+          <div class="dash-card card-quote">
+            <div class="card-header-flex" style="margin-bottom: 0.5rem;">
+              <h3 class="card-title" style="margin-bottom: 0;">Reflexión Diaria</h3>
+              <button id="btnNewQuote" class="btn-text" style="font-size: 0.8rem;">Otra reflexión ↺</button>
+            </div>
+            <div class="quote-container">
+              <p id="quoteText" class="quote-body">"El autocuidado no es un lujo, es una necesidad para tu salud emocional."</p>
+              <small id="quoteAuthor" class="text-muted">— Enfoque Humanista</small>
+            </div>
+          </div>
+
+          <!-- Píldoras de Psicoeducación -->
+          <div class="dash-card span-full">
+            <h3 class="card-title" style="margin-bottom: 1rem;">Píldoras de Psicoeducación</h3>
+            <div class="psycho-pills-grid">
+              <div class="psycho-pill-card">
+                <span class="pill-icon"></span>
+                <div>
+                  <strong>Regulación Respiratoria 4-7-8</strong>
+                  <p class="text-muted text-sm" style="margin-top:0.3rem;">Inhala en 4 segundos, sostén 7 segundos y exhala suavemente en 8 para desactivar el estrés.</p>
+                </div>
+              </div>
+              <div class="psycho-pill-card">
+                <span class="pill-icon"></span>
+                <div>
+                  <strong>Técnica de Anclaje 5-4-3-2-1</strong>
+                  <p class="text-muted text-sm" style="margin-top:0.3rem;">Ante la ansiedad: observa 5 objetos, toca 4 texturas, escucha 3 sonidos, huele 2 aromas y prueba 1 sabor.</p>
+                </div>
+              </div>
+              <div class="psycho-pill-card">
+                <span class="pill-icon"></span>
+                <div>
+                  <strong>Validación Emocional</strong>
+                  <p class="text-muted text-sm" style="margin-top:0.3rem;">Todas las emociones cumplen una función adaptativa. Sentir enojo o tristeza no te hace débil.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Noticias y Carrusel Automático -->
+          <div class="dash-card span-full" id="newsCardContainer">
+            <div class="card-header-flex">
+              <h3 class="card-title" style="margin-bottom:0;">Noticias y Lecturas (Carrusel Automático)</h3>
+              <small class="badge" style="font-size: 0.7rem;">Autoplay 5s</small>
+            </div>
+            <div class="news-layout-horizontal">
+              <div class="news-preview" id="newsContent" style="flex: 1;">
+                <span class="badge" id="newsCategory">Prevención</span>
+                <h4 id="newsTitleDisplay" style="margin:0.8rem 0; font-size: 1.2rem; cursor:pointer;">Cargando...</h4>
+                <p class="text-muted" id="newsSummary">...</p>
+                <button id="btnOpenNewsDetail" class="btn-text" style="margin-top:1rem; padding:0;">Leer artículo completo &rarr;</button>
+              </div>
+              <div class="slider-controls-vertical">
+                <button id="btnPrev" class="btn-nav">&uarr;</button>
+                <div id="indicatorsContainer" class="indicators-vertical"></div>
+                <button id="btnNext" class="btn-nav">&darr;</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- VISTA 2: SERVICIOS -->
+      <div id="view-servicios" class="page-view">
+        <div class="dash-card span-full">
+          <h3 class="card-title">Catálogo Completo de Servicios Terapéuticos</h3>
+          <p class="text-muted" style="margin-bottom: 2rem;">Ofrecemos enfoques personalizados ajustados a tus requerimientos emocionales.</p>
+
+          <div class="services-subpage-grid">
+            <div class="service-card-expanded">
+              <span class="service-icon-lg"></span>
+              <h4>Terapia Individual</h4>
+              <p class="text-muted text-sm" style="margin: 0.8rem 0;">Acompañamiento especializado para el manejo del estrés, ansiedad, desarrollo de autoestima y superación de bloqueos emocionales.</p>
+              <button class="btn btn-primary open-booking-btn">Solicitar Consulta</button>
+            </div>
+
+            <div class="service-card-expanded">
+              <span class="service-icon-lg"></span>
+              <h4>Terapia de Pareja</h4>
+              <p class="text-muted text-sm" style="margin: 0.8rem 0;">Espacio neutral para fortalecer la comunicación asertiva, resolución pacífica de conflictos y reconstrucción de acuerdos mutuos.</p>
+              <button class="btn btn-primary open-booking-btn">Solicitar Consulta</button>
+            </div>
+
+            <div class="service-card-expanded">
+              <span class="service-icon-lg"></span>
+              <h4>Identidad & Duelo</h4>
+              <p class="text-muted text-sm" style="margin: 0.8rem 0;">Acompañamiento afirmativo, empático y profesional en procesos de transición de vida, pérdidas significativas e identidad personal.</p>
+              <button class="btn btn-primary open-booking-btn">Solicitar Consulta</button>
+            </div>
+
+            <div class="service-card-expanded">
+              <span class="service-icon-lg"></span>
+              <h4>Manejo de Ansiedad</h4>
+              <p class="text-muted text-sm" style="margin: 0.8rem 0;">Técnicas cognitivo-conductuales y regulación somática para recuperar el control sobre pensamientos intrusivos y tensión.</p>
+              <button class="btn btn-primary open-booking-btn">Solicitar Consulta</button>
+            </div>
           </div>
         </div>
       </div>
 
-    </div>
-  </section>
+      <!-- VISTA 3: TEST EMOCIONALES -->
+      <div id="view-test" class="page-view">
+        <div class="dash-card span-full">
+          <h3 class="card-title">Centro de Evaluación Inicial</h3>
+          <p class="text-muted" style="margin-bottom: 2rem;">Selecciona una evaluación guiada para identificar el estado actual de tu bienestar emocional.</p>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container footer-content">
-      <p>&copy; 2026 Consciencia Plena Psicología - Psic. Sonia Vargas</p>
-      <p class="privacy-link-container">
-        <a href="#" id="openPrivacyLink">Aviso de Privacidad (Derechos ARCO)</a>
-      </p>
-      <p class="softtec-brand">Desarrollado por <strong>SoftTec</strong> • Soluciones de Software y Tecnología</p>
+          <div class="quiz-subpage-grid">
+            <div class="quiz-card-item">
+              <div class="quiz-header-badge">Test Individual</div>
+              <h4 style="margin: 0.8rem 0;">Cuestionario de Bienestar Personal</h4>
+              <p class="text-muted text-sm">Evalúa síntomas breves de ansiedad, estrés y motivación cotidiana.</p>
+              <button class="btn btn-primary open-quiz-btn" data-quiz="individual" style="margin-top: 1.5rem;">Comenzar Test</button>
+            </div>
+
+            <div class="quiz-card-item">
+              <div class="quiz-header-badge">Test de Pareja</div>
+              <h4 style="margin: 0.8rem 0;">Evaluación de Dinámica Relacional</h4>
+              <p class="text-muted text-sm">Identifica factores de tensión, satisfacción y calidad en la comunicación.</p>
+              <button class="btn btn-primary open-quiz-btn" data-quiz="pareja" style="margin-top: 1.5rem;">Comenzar Test</button>
+            </div>
+
+            <div class="quiz-card-item">
+              <div class="quiz-header-badge">Test de Identidad</div>
+              <h4 style="margin: 0.8rem 0;">Autoexploración y Aceptación</h4>
+              <p class="text-muted text-sm">Espacio de valoración personal sobre apoyo social y afirmación.</p>
+              <button class="btn btn-primary open-quiz-btn" data-quiz="identidad" style="margin-top: 1.5rem;">Comenzar Test</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <p>© Consciencia Plena. Todos los derechos reservados.</p>
+          <div class="footer-links">
+            <button type="button" id="btnOpenPrivacyFooter" class="btn-footer-link">Aviso de Privacidad y Derechos ARCO</button>
+            <span>•</span>
+            <button type="button" id="btnOpenCookiesFooter" class="btn-footer-link">Política de Cookies</button>
+          </div>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- CHATBOT FLOTANTE -->
+  <div class="chatbot-wrapper">
+    <div class="chatbot-window" id="chatbotWindow" style="display: none;">
+      <div class="chatbot-header">
+        <strong>Asistente Virtual</strong>
+        <button id="closeChatbot" class="close-btn" style="color:white;">&times;</button>
+      </div>
+      <div class="chatbot-body" id="chatbotBody">
+        <div class="chat-msg bot-msg">¡Hola! Soy el asistente virtual de Consciencia Plena. ¿En qué te puedo ayudar hoy?</div>
+      </div>
+      <div class="chatbot-footer">
+        <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+        <button id="btnSendChat" class="btn btn-primary" style="padding: 0.5rem 1rem;">➤</button>
+      </div>
     </div>
-  </footer>
+    <button class="chatbot-toggle" id="chatbotToggle">💬</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
 </html>
- 
-
