@@ -1,14 +1,24 @@
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
   /* ===================================================
-     1. ANIMACIÓN DEL LOGO Y DESPLIEGUE DEL ENGRANAJE
+     1. ANIMACIÓN DEL LOGO, ENGRANAJE Y MENÚ HAMBURGUESA
      =================================================== */
   const logoInteractiveBtn = document.getElementById("logoInteractiveBtn");
   const adminGearContainer = document.getElementById("adminGearContainer");
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const sidebarNav = document.getElementById("sidebarNav");
 
   if (logoInteractiveBtn && adminGearContainer) {
     logoInteractiveBtn.addEventListener("click", () => {
       logoInteractiveBtn.classList.toggle("rotated");
       adminGearContainer.classList.toggle("gear-visible");
+    });
+  }
+
+  // Lógica del menú hamburguesa móvil
+  if (hamburgerBtn && sidebarNav) {
+    hamburgerBtn.addEventListener("click", () => {
+      hamburgerBtn.classList.toggle("open");
+      sidebarNav.classList.toggle("active");
     });
   }
 
@@ -67,6 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (viewTitles[targetId]) {
         topbarTitle.textContent = viewTitles[targetId].title;
         topbarSub.textContent = viewTitles[targetId].sub;
+      }
+
+      // Cerrar menú hamburguesa automáticamente al seleccionar una opción en móvil
+      if (sidebarNav && sidebarNav.classList.contains("active")) {
+        sidebarNav.classList.remove("active");
+        if (hamburgerBtn) hamburgerBtn.classList.remove("open");
       }
     });
   });
@@ -226,35 +242,38 @@ document.addEventListener("DOMContentLoaded", () => {
   startAutoplay();
 
   /* ===================================================
-     6. TOGGLE MODO OSCURO / CLARO
+     6. TOGGLE MODO OSCURO / CLARO (ESCRITORIO Y MÓVIL)
      =================================================== */
   const themeToggleBtn = document.getElementById("themeToggleBtn");
+  const themeToggleBtnMobile = document.getElementById("themeToggleBtnMobile");
   const body = document.body;
 
-  const savedTheme = localStorage.getItem("sonia_theme_preference_v1") || "dark";
-  if (savedTheme === "light") {
-    body.classList.remove("dark-mode");
-    body.classList.add("light-mode");
-    themeToggleBtn.textContent = "☀️";
-  } else {
-    body.classList.remove("light-mode");
-    body.classList.add("dark-mode");
-    themeToggleBtn.textContent = "🌙";
-  }
-
-  themeToggleBtn.addEventListener("click", () => {
-    if (body.classList.contains("dark-mode")) {
+  function aplicarTema(theme) {
+    if (theme === "light") {
       body.classList.remove("dark-mode");
       body.classList.add("light-mode");
-      themeToggleBtn.textContent = "☀️";
-      localStorage.setItem("sonia_theme_preference_v1", "light");
+      if (themeToggleBtn) themeToggleBtn.textContent = "☀️";
+      if (themeToggleBtnMobile) themeToggleBtnMobile.textContent = "☀️";
     } else {
       body.classList.remove("light-mode");
       body.classList.add("dark-mode");
-      themeToggleBtn.textContent = "🌙";
-      localStorage.setItem("sonia_theme_preference_v1", "dark");
+      if (themeToggleBtn) themeToggleBtn.textContent = "🌙";
+      if (themeToggleBtnMobile) themeToggleBtnMobile.textContent = "🌙";
     }
-  });
+  }
+
+  const savedTheme = localStorage.getItem("sonia_theme_preference_v1") || "dark";
+  aplicarTema(savedTheme);
+
+  function alternarTema() {
+    const isDark = body.classList.contains("dark-mode");
+    const nextTheme = isDark ? "light" : "dark";
+    aplicarTema(nextTheme);
+    localStorage.setItem("sonia_theme_preference_v1", nextTheme);
+  }
+
+  if (themeToggleBtn) themeToggleBtn.addEventListener("click", alternarTema);
+  if (themeToggleBtnMobile) themeToggleBtnMobile.addEventListener("click", alternarTema);
 
   /* ===================================================
      7. PANEL DE ADMINISTRACIÓN UNIFICADO
@@ -394,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const todayStr = new Date().toISOString().split("T")[0];
   if (bookingDateInput) bookingDateInput.min = todayStr;
 
- const masterTimeSlots = [
+const masterTimeSlots = [
     "09:00", "10:00", "11:00", "12:00",
     "13:00", "14:00", "15:00", "16:00",
     "17:00", "18:00", "19:00", "20:00"
@@ -425,15 +444,15 @@ document.addEventListener("DOMContentLoaded", () => {
     masterTimeSlots.forEach(slot => {
       const opt = document.createElement("option");
       opt.value = slot;
-      if (reserved.includes(slot)) { opt.textContent = `${slot} (Lleno)`; opt.disabled = true; } 
-      else { opt.textContent = `${slot} `; disponibles++; }
+      if (reserved.includes(slot)) { opt.textContent = `${slot} ❌ (Lleno)`; opt.disabled = true; } 
+      else { opt.textContent = `${slot} ✅`; disponibles++; }
       bookingTimeSelect.appendChild(opt);
     });
 
     trafficLightBadge.style.display = "block";
-    if (disponibles >= 8) { trafficLightBadge.textContent = `Disponible (${disponibles})`; trafficLightBadge.className = "traffic-pill traffic-green"; }
-    else if (disponibles > 0) { trafficLightBadge.textContent = `Media Dispo (${disponibles})`; trafficLightBadge.className = "traffic-pill traffic-yellow"; }
-    else { trafficLightBadge.textContent = `Lleno`; trafficLightBadge.className = "traffic-pill traffic-red"; }
+    if (disponibles >= 8) { trafficLightBadge.textContent = `🟢 Alta Dispo (${disponibles})`; trafficLightBadge.className = "traffic-pill traffic-green"; }
+    else if (disponibles > 0) { trafficLightBadge.textContent = `🟡 Media Dispo (${disponibles})`; trafficLightBadge.className = "traffic-pill traffic-yellow"; }
+    else { trafficLightBadge.textContent = `🔴 Lleno`; trafficLightBadge.className = "traffic-pill traffic-red"; }
   }
 
   document.body.addEventListener("click", (e) => {
@@ -503,19 +522,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const quizFeedbackMap = {
     individual: {
-      estable: { icon: "", title: "Bienestar Emocional Estable", text: "Muestras un nivel equilibrado de manejo del estrés cotidiano. Tus respuestas reflejan que cuentas con recursos de afrontamiento funcionales. Mantén tus hábitos de autocuidado." },
-      moderado: { icon: "", title: "Nivel de Tensión Moderado", text: "Presentas señales leves o moderadas de agotamiento y preocupación. Es un momento ideal para hacer una pausa, revisar tus espacios de descanso y fortalecer tu regulación emocional." },
-      significativo: { icon: "", title: "Indicadores de Carga Emocional Elevada", text: "Tus respuestas reflejan una carga considerable de estrés o ansiedad que puede estar afectando tu día a día. Te recomendamos contar con un espacio terapéutico guiado para canalizarlo." }
+      estable: { icon: "🌱", title: "Bienestar Emocional Estable", text: "Muestras un nivel equilibrado de manejo del estrés cotidiano. Tus respuestas reflejan que cuentas con recursos de afrontamiento funcionales. Mantén tus hábitos de autocuidado." },
+      moderado: { icon: "🟡", title: "Nivel de Tensión Moderado", text: "Presentas señales leves o moderadas de agotamiento y preocupación. Es un momento ideal para hacer una pausa, revisar tus espacios de descanso y fortalecer tu regulación emocional." },
+      significativo: { icon: "🌊", title: "Indicadores de Carga Emocional Elevada", text: "Tus respuestas reflejan una carga considerable de estrés o ansiedad que puede estar afectando tu día a día. Te recomendamos contar con un espacio terapéutico guiado para canalizarlo." }
     },
     pareja: {
-      estable: { icon: "", title: "Dinámica Relacional Saludable", text: "Existe una buena base de comunicación y resolución de conflictos. Mantener el diálogo abierto fortalecerá los acuerdos mutuos a largo plazo." },
-      moderado: { icon: "", title: "Fricciones en la Comunicación", text: "Se observan puntos de tensión recurrentes o momentos de distanciamiento afectivo. Trabajar en técnicas de escucha activa puede prevenir desgastes en el vínculo." },
-      significativo: { icon: "", title: "Necesidad de Mediación Profesional", text: "Se identifican desacuerdos intensos y dificultades para alcanzar consensos. Un espacio neutro de terapia de pareja les brindará herramientas para reconstruir la confianza." }
+      estable: { icon: "👩‍❤️‍👨", title: "Dinámica Relacional Saludable", text: "Existe una buena base de comunicación y resolución de conflictos. Mantener el diálogo abierto fortalecerá los acuerdos mutuos a largo plazo." },
+      moderado: { icon: "💬", title: "Fricciones en la Comunicación", text: "Se observan puntos de tensión recurrentes o momentos de distanciamiento afectivo. Trabajar en técnicas de escucha activa puede prevenir desgastes en el vínculo." },
+      significativo: { icon: "🤝", title: "Necesidad de Mediación Profesional", text: "Se identifican desacuerdos intensos y dificultades para alcanzar consensos. Un espacio neutro de terapia de pareja les brindará herramientas para reconstruir la confianza." }
     },
     identidad: {
-      estable: { icon: "", title: "Proceso de Autoafirmación Claro", text: "Cuentas con claridad en tu autoaceptación y redes de apoyo saludables. Continúa cultivando espacios donde te sientas plenamente validado(a)." },
-      moderado: { icon: "", title: "Etapa de Autoexploración", text: "Experimentas dudas o cierta aprensión respecto a la aceptación en tus entornos cotidianos. Un acompañamiento empático ayuda a procesar estas transiciones con confianza." },
-      significativo: { icon: "", title: "Acompañamiento Afirmativo Recomendado", text: "Identificamos sentimientos de aislamiento o tensión respecto a tu expresión e identidad. Contar con un acompañamiento profesional afirmativo reforzará tu autoestima y seguridad." }
+      estable: { icon: "🌈", title: "Proceso de Autoafirmación Claro", text: "Cuentas con claridad en tu autoaceptación y redes de apoyo saludables. Continúa cultivando espacios donde te sientas plenamente validado(a)." },
+      moderado: { icon: "🔍", title: "Etapa de Autoexploración", text: "Experimentas dudas o cierta aprensión respecto a la aceptación en tus entornos cotidianos. Un acompañamiento empático ayuda a procesar estas transiciones con confianza." },
+      significativo: { icon: "🛡️", title: "Acompañamiento Afirmativo Recomendado", text: "Identificamos sentimientos de aislamiento o tensión respecto a tu expresión e identidad. Contar con un acompañamiento profesional afirmativo reforzará tu autoestima y seguridad." }
     }
   };
 
@@ -585,7 +604,6 @@ document.addEventListener("DOMContentLoaded", () => {
     resultIcon.textContent = feedbackObj.icon;
     resultFeedback.textContent = feedbackObj.text;
 
-    // Guardar resultado en historial local para reportes
     const testResultsList = JSON.parse(localStorage.getItem("sonia_test_results_v1") || "[]");
     testResultsList.push({
       id: "TST-" + Date.now(),
