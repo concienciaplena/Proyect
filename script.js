@@ -1,4 +1,4 @@
- document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   /* ===================================================
      1. ANIMACIÓN DEL LOGO, ENGRANAJE Y MENÚ HAMBURGUESA
      =================================================== */
@@ -30,14 +30,16 @@
   const btnOpenPrivacyFooter = document.getElementById("btnOpenPrivacyFooter");
   const btnOpenCookiesFooter = document.getElementById("btnOpenCookiesFooter");
 
-  if (!localStorage.getItem("sonia_privacy_accepted_v2")) {
+  if (!localStorage.getItem("sonia_privacy_accepted_v2") && privacyModal) {
     privacyModal.style.display = "flex";
   }
 
-  btnAcceptPrivacy.addEventListener("click", () => {
-    localStorage.setItem("sonia_privacy_accepted_v2", "true");
-    privacyModal.style.display = "none";
-  });
+  if (btnAcceptPrivacy) {
+    btnAcceptPrivacy.addEventListener("click", () => {
+      localStorage.setItem("sonia_privacy_accepted_v2", "true");
+      privacyModal.style.display = "none";
+    });
+  }
 
   if (btnOpenPrivacyFooter) {
     btnOpenPrivacyFooter.addEventListener("click", () => privacyModal.style.display = "flex");
@@ -58,7 +60,7 @@
   const topbarSub = document.getElementById("topbarSub");
 
   const viewTitles = {
-    "view-inicio": { title: "¡Hola, bienvenido(a)!", sub: "Explora herramientas didácticas para tu bienestar mental." },
+    "view-inicio": { title: "¡Hola, bienvenido(a)!", sub: "Las emociones negativas no te hacen una persona negativa; te hacen humano." },
     "view-servicios": { title: "Servicios Terapéuticos", sub: "Atención psicológica profesional y enfocada." },
     "view-test": { title: "Centro de Cuestionarios", sub: "Test iniciales de autoevaluación guiada." }
   };
@@ -97,11 +99,11 @@
   const moodText = document.getElementById("moodText");
 
   const moodData = {
-    tranquilo: { icon: "🌱", title: "Estado de Serenidad", text: "Aprovecha este momento de calma para reflexionar o practicar gratitud. Registrar qué facilitó esta tranquilidad te ayudará a replicarla." },
-    ansioso: { icon: "🫁", title: "Manejo de Tensión", text: "La ansiedad es una respuesta defensiva de tu cuerpo. Intenta realizar 3 respiraciones profundas (4 segundos inhala, 8 segundos exhala) y recuerda que este malestar es temporal." },
-    triste: { icon: "💙", title: "Validación y Permisividad", text: "Es completamente válido sentir desánimo. Trátate con compasión hoy y realiza una actividad pequeña de autocuidado que no requiera gran esfuerzo." },
-    energia: { icon: "⚡", title: "Canalización Positiva", text: "¡Gran momento! Canaliza esa energía en proyectos pendientes, actividad física o expresar afecto a tus personas cercanas." },
-    abrumado: { icon: "🧠", title: "Desaceleración y Foco", text: "Cuando todo parece demasiado, divide tus pendientes en pasos diminutos. Enfócate solo en la tarea más inmediata y haz una pausa de 5 minutos." }
+    tranquilo: { icon: "", title: "Estado de Serenidad", text: "Aprovecha este momento de calma para reflexionar o practicar gratitud. Registrar qué facilitó esta tranquilidad te ayudará a replicarla." },
+    ansioso: { icon: "", title: "Manejo de Tensión", text: "La ansiedad es una respuesta defensiva de tu cuerpo. Intenta realizar 3 respiraciones profundas (4 segundos inhala, 8 segundos exhala) y recuerda que este malestar es temporal." },
+    triste: { icon: "", title: "Validación y Permisividad", text: "Es completamente válido sentir desánimo. Trátate con compasión hoy y realiza una actividad pequeña de autocuidado que no requiera gran esfuerzo." },
+    energia: { icon: "", title: "Canalización Positiva", text: "¡Gran momento! Canaliza esa energía en proyectos pendientes, actividad física o expresar afecto a tus personas cercanas." },
+    abrumado: { icon: "", title: "Desaceleración y Foco", text: "Cuando todo parece demasiado, divide tus pendientes en pasos diminutos. Enfócate solo en la tarea más inmediata y haz una pausa de 5 minutos." }
   };
 
   moodBtns.forEach(btn => {
@@ -203,8 +205,10 @@
     newsCardContainer.addEventListener("mouseleave", startAutoplay);
   }
 
-  document.getElementById("btnPrev").addEventListener("click", () => { anteriorNoticia(); startAutoplay(); });
-  document.getElementById("btnNext").addEventListener("click", () => { siguienteNoticia(); startAutoplay(); });
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+  if (btnPrev) btnPrev.addEventListener("click", () => { anteriorNoticia(); startAutoplay(); });
+  if (btnNext) btnNext.addEventListener("click", () => { siguienteNoticia(); startAutoplay(); });
 
   function abrirModalLectura(idx) {
     const item = noticias[idx];
@@ -257,8 +261,8 @@
     } else {
       body.classList.remove("light-mode");
       body.classList.add("dark-mode");
-      if (themeToggleBtn) themeToggleBtn.textContent = "🌙";
-      if (themeToggleBtnMobile) themeToggleBtnMobile.textContent = "🌙";
+      if (themeToggleBtn) themeToggleBtn.textContent = "☾";
+      if (themeToggleBtnMobile) themeToggleBtnMobile.textContent = "☾";
     }
   }
 
@@ -276,8 +280,14 @@
   if (themeToggleBtnMobile) themeToggleBtnMobile.addEventListener("click", alternarTema);
 
   /* ===================================================
-     7. PANEL DE ADMINISTRACIÓN UNIFICADO
+     7. AUTENTICACIÓN CON ASTERISCOS Y PANEL DE ADMINISTRACIÓN
      =================================================== */
+  const adminAuthModal = document.getElementById("adminAuthModal");
+  const closeAdminAuthModal = document.getElementById("closeAdminAuthModal");
+  const adminAuthForm = document.getElementById("adminAuthForm");
+  const adminPasswordInput = document.getElementById("adminPasswordInput");
+  const adminAuthError = document.getElementById("adminAuthError");
+
   const adminPanelModal = document.getElementById("adminPanelModal");
   const btnOpenAdminGear = document.getElementById("btnOpenAdminGear");
   const closeAdminPanelModal = document.getElementById("closeAdminPanelModal");
@@ -287,13 +297,31 @@
   const sectionAdminNews = document.getElementById("sectionAdminNews");
   const sectionAdminExcel = document.getElementById("sectionAdminExcel");
 
-  if (btnOpenAdminGear) {
+  if (btnOpenAdminGear && adminAuthModal) {
     btnOpenAdminGear.addEventListener("click", () => {
-      const pass = prompt("Clave de acceso de administración:");
-      if (pass === "admin123") {
+      adminAuthForm.reset();
+      adminAuthError.style.display = "none";
+      adminAuthModal.style.display = "flex";
+      setTimeout(() => adminPasswordInput.focus(), 100);
+    });
+  }
+
+  if (closeAdminAuthModal) {
+    closeAdminAuthModal.addEventListener("click", () => {
+      adminAuthModal.style.display = "none";
+    });
+  }
+
+  if (adminAuthForm) {
+    adminAuthForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (adminPasswordInput.value === "admin123") {
+        adminAuthModal.style.display = "none";
         adminPanelModal.style.display = "flex";
-      } else if (pass !== null) {
-        alert("Clave incorrecta.");
+      } else {
+        adminAuthError.style.display = "block";
+        adminPasswordInput.value = "";
+        adminPasswordInput.focus();
       }
     });
   }
@@ -333,29 +361,27 @@
     document.body.removeChild(link);
   }
 
-  document.getElementById("btnExportCitas").addEventListener("click", () => {
-    const citas = JSON.parse(localStorage.getItem("sonia_bookings_v3") || "[]");
-    if (!citas.length) return alert("No hay citas registradas.");
-    const rows = [["ID", "Fecha", "Horario", "Nombre", "Correo", "Notas", "Estado"]];
-    citas.forEach(c => rows.push([c.id, c.date, c.timeSlot, c.name, c.email, c.notes, c.status]));
-    descargarCSV("Reporte_Citas_SoniaVargas.csv", rows);
-  });
+  const btnExportCitas = document.getElementById("btnExportCitas");
+  if (btnExportCitas) {
+    btnExportCitas.addEventListener("click", () => {
+      const citas = JSON.parse(localStorage.getItem("sonia_bookings_v3") || "[]");
+      if (!citas.length) return alert("No hay citas registradas.");
+      const rows = [["ID", "Fecha", "Horario", "Nombre", "Correo", "Notas", "Estado"]];
+      citas.forEach(c => rows.push([c.id, c.date, c.timeSlot, c.name, c.email, c.notes, c.status]));
+      descargarCSV("Reporte_Citas_SoniaVargas.csv", rows);
+    });
+  }
 
-  document.getElementById("btnExportTest").addEventListener("click", () => {
-    const tests = JSON.parse(localStorage.getItem("sonia_test_results_v1") || "[]");
-    if (!tests.length) return alert("No hay resultados de test registrados.");
-    const rows = [["ID", "Tipo", "Nombre", "Correo", "Puntaje", "Fecha"]];
-    tests.forEach(t => rows.push([t.id, t.tipo, t.nombre, t.email, t.puntaje, t.fecha]));
-    descargarCSV("Reporte_Test_Resultados.csv", rows);
-  });
-
-  document.getElementById("btnExportBuzon").addEventListener("click", () => {
-    const buzon = JSON.parse(localStorage.getItem("sonia_buzon_v1") || "[]");
-    if (!buzon.length) return alert("No hay mensajes en el buzón.");
-    const rows = [["Nombre", "Correo", "Mensaje", "Fecha"]];
-    buzon.forEach(m => rows.push([m.nombre, m.email, m.mensaje, m.fecha]));
-    descargarCSV("Reporte_Buzon_Consultas.csv", rows);
-  });
+  const btnExportTest = document.getElementById("btnExportTest");
+  if (btnExportTest) {
+    btnExportTest.addEventListener("click", () => {
+      const tests = JSON.parse(localStorage.getItem("sonia_test_results_v1") || "[]");
+      if (!tests.length) return alert("No hay resultados de test registrados.");
+      const rows = [["ID", "Tipo", "Nombre", "Correo", "Puntaje", "Fecha"]];
+      tests.forEach(t => rows.push([t.id, t.tipo, t.nombre, t.email, t.puntaje, t.fecha]));
+      descargarCSV("Reporte_Test_Resultados.csv", rows);
+    });
+  }
 
   /* ===================================================
      9. CHATBOT FLOTANTE
@@ -367,10 +393,14 @@
   const chatInput = document.getElementById("chatInput");
   const chatbotBody = document.getElementById("chatbotBody");
 
-  chatbotToggle.addEventListener("click", () => {
-    chatbotWindow.style.display = chatbotWindow.style.display === "none" ? "flex" : "none";
-  });
-  closeChatbot.addEventListener("click", () => chatbotWindow.style.display = "none");
+  if (chatbotToggle && chatbotWindow) {
+    chatbotToggle.addEventListener("click", () => {
+      chatbotWindow.style.display = chatbotWindow.style.display === "none" ? "flex" : "none";
+    });
+  }
+  if (closeChatbot && chatbotWindow) {
+    closeChatbot.addEventListener("click", () => chatbotWindow.style.display = "none");
+  }
 
   function addMessage(text, sender) {
     const msg = document.createElement("div");
@@ -380,8 +410,8 @@
     chatbotBody.scrollTop = chatbotBody.scrollHeight;
   }
 
-  btnSendChat.addEventListener("click", handleChat);
-  chatInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleChat(); });
+  if (btnSendChat) btnSendChat.addEventListener("click", handleChat);
+  if (chatInput) chatInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleChat(); });
 
   function handleChat() {
     const text = chatInput.value.trim();
@@ -394,8 +424,11 @@
       let reply = "Entiendo. Puedes agendar una cita de orientación con Sonia directamente desde la vista de Inicio.";
       if (lower.includes("cita") || lower.includes("agendar")) reply = "¡Claro! Haz clic en 'Agendar Cita' dentro de la tarjeta de la Psicóloga Sonia.";
       if (lower.includes("hola")) reply = "¡Hola! ¿Cómo te sientes hoy? Estoy aquí para apoyarte.";
+      if (lower.includes("triste")) reply = "Que mal que te sientas asi, podemos ayudar a tratarlo, te recomiendo que agendes una cita con la psicologa Sonia, para ayudarte";
+      if (lower.includes("suicidio") || lower.includes("suicidarme")) reply = "Toma un momento, respira y piensa bien lo que haces, inspecciona tus emociones, lo que te recomiendo es que agendes una cita para poder apoyarte, ¡No estas solo!";
+      if (lower.includes("solo")) reply = "No te sientas asi, no estas solo, te recomiendo que agendes una cita con la psicologa Sonia, para ayudarte";
       addMessage(reply, "bot");
-    }, 1000);
+    }, 600);
   }
 
   /* ===================================================
@@ -413,7 +446,7 @@
   const todayStr = new Date().toISOString().split("T")[0];
   if (bookingDateInput) bookingDateInput.min = todayStr;
 
-const masterTimeSlots = [
+  const masterTimeSlots = [
     "09:00", "10:00", "11:00", "12:00",
     "13:00", "14:00", "15:00", "16:00",
     "17:00", "18:00", "19:00", "20:00"
@@ -433,7 +466,7 @@ const masterTimeSlots = [
     const dObj = new Date(dateStr.split("-")[0], dateStr.split("-")[1] - 1, dateStr.split("-")[2]);
     if (dObj.getDay() === 0 || dObj.getDay() === 6) {
       bookingTimeSelect.innerHTML = '<option value="">Fin de semana no disponible</option>';
-      trafficLightBadge.textContent = "🔴 No Hábil";
+      trafficLightBadge.textContent = "No Hábil";
       trafficLightBadge.className = "traffic-pill traffic-red";
       trafficLightBadge.style.display = "block";
       return;
@@ -444,15 +477,15 @@ const masterTimeSlots = [
     masterTimeSlots.forEach(slot => {
       const opt = document.createElement("option");
       opt.value = slot;
-      if (reserved.includes(slot)) { opt.textContent = `${slot} ❌ (Lleno)`; opt.disabled = true; } 
-      else { opt.textContent = `${slot} ✅`; disponibles++; }
+      if (reserved.includes(slot)) { opt.textContent = `${slot} (Lleno)`; opt.disabled = true; } 
+      else { opt.textContent = `${slot}`; disponibles++; }
       bookingTimeSelect.appendChild(opt);
     });
 
     trafficLightBadge.style.display = "block";
-    if (disponibles >= 8) { trafficLightBadge.textContent = `🟢 Alta Dispo (${disponibles})`; trafficLightBadge.className = "traffic-pill traffic-green"; }
-    else if (disponibles > 0) { trafficLightBadge.textContent = `🟡 Media Dispo (${disponibles})`; trafficLightBadge.className = "traffic-pill traffic-yellow"; }
-    else { trafficLightBadge.textContent = `🔴 Lleno`; trafficLightBadge.className = "traffic-pill traffic-red"; }
+    if (disponibles >= 8) { trafficLightBadge.textContent = `Disponible (${disponibles})`; trafficLightBadge.className = "traffic-pill traffic-green"; }
+    else if (disponibles > 0) { trafficLightBadge.textContent = `(${disponibles})`; trafficLightBadge.className = "traffic-pill traffic-yellow"; }
+    else { trafficLightBadge.textContent = `Lleno`; trafficLightBadge.className = "traffic-pill traffic-red"; }
   }
 
   document.body.addEventListener("click", (e) => {
@@ -463,7 +496,7 @@ const masterTimeSlots = [
     }
   });
 
-  closeBookingModal.addEventListener("click", () => bookingModal.style.display = "none");
+  if (closeBookingModal) closeBookingModal.addEventListener("click", () => bookingModal.style.display = "none");
   if (bookingDateInput) bookingDateInput.addEventListener("change", (e) => updateTimeSlots(e.target.value));
 
   if (bookingForm) {
@@ -488,28 +521,36 @@ const masterTimeSlots = [
      11. MIS CITAS
      =================================================== */
   const manageModal = document.getElementById("manageBookingModal");
-  document.getElementById("btnOpenManageBooking").addEventListener("click", () => { document.getElementById("userBookingsList").innerHTML = ""; manageModal.style.display = "flex"; });
-  document.getElementById("closeManageModal").addEventListener("click", () => manageModal.style.display = "none");
+  const btnOpenManageBooking = document.getElementById("btnOpenManageBooking");
+  const closeManageModal = document.getElementById("closeManageModal");
+  const btnSearchBooking = document.getElementById("btnSearchBooking");
 
-  document.getElementById("btnSearchBooking").addEventListener("click", () => {
-    const email = document.getElementById("searchBookingEmail").value.trim().toLowerCase();
-    const list = getBookings().filter(b => b.email.toLowerCase() === email);
-    const container = document.getElementById("userBookingsList");
-    container.innerHTML = "";
-    if (!list.length) return container.innerHTML = "<p class='text-muted'>Sin citas.</p>";
-    list.forEach(b => {
-      const item = document.createElement("div");
-      item.style.cssText = "background:var(--input-bg); padding:1rem; border-radius:12px; margin-bottom:1rem; font-size:0.9rem; border:1px solid var(--glass-border);";
-      const diff = (new Date(`${b.date}T${b.timeSlot.split(" - ")[0]}:00`) - new Date()) / 36e5;
-      item.innerHTML = `<strong>${b.date} - ${b.timeSlot}</strong><br>Estado: ${b.status}<br>` + 
-        (b.status === "Cancelada" ? "" : (diff >= 24 ? `<button class="btn btn-secondary cancel-btn" data-id="${b.id}" style="margin-top:0.5rem;color:#e57373;padding:0.3rem 0.6rem;">Cancelar</button>` : `<small style="color:orange">No cancelable (<24h)</small>`));
-      container.appendChild(item);
+  if (btnOpenManageBooking) {
+    btnOpenManageBooking.addEventListener("click", () => { document.getElementById("userBookingsList").innerHTML = ""; manageModal.style.display = "flex"; });
+  }
+  if (closeManageModal) closeManageModal.addEventListener("click", () => manageModal.style.display = "none");
+
+  if (btnSearchBooking) {
+    btnSearchBooking.addEventListener("click", () => {
+      const email = document.getElementById("searchBookingEmail").value.trim().toLowerCase();
+      const list = getBookings().filter(b => b.email.toLowerCase() === email);
+      const container = document.getElementById("userBookingsList");
+      container.innerHTML = "";
+      if (!list.length) return container.innerHTML = "<p class='text-muted'>Sin citas.</p>";
+      list.forEach(b => {
+        const item = document.createElement("div");
+        item.style.cssText = "background:var(--input-bg); padding:1rem; border-radius:12px; margin-bottom:1rem; font-size:0.9rem; border:1px solid var(--glass-border);";
+        const diff = (new Date(`${b.date}T${b.timeSlot.split(" - ")[0]}:00`) - new Date()) / 36e5;
+        item.innerHTML = `<strong>${b.date} - ${b.timeSlot}</strong><br>Estado: ${b.status}<br>` + 
+          (b.status === "Cancelada" ? "" : (diff >= 24 ? `<button class="btn btn-secondary cancel-btn" data-id="${b.id}" style="margin-top:0.5rem;color:#e57373;padding:0.3rem 0.6rem;">Cancelar</button>` : `<small style="color:orange">No cancelable (<24h)</small>`));
+        container.appendChild(item);
+      });
+      document.querySelectorAll(".cancel-btn").forEach(btn => btn.addEventListener("click", (e) => {
+        const all = getBookings(); const target = all.find(x => x.id === e.target.dataset.id);
+        if(target) { target.status = "Cancelada"; localStorage.setItem("sonia_bookings_v3", JSON.stringify(all)); manageModal.style.display="none"; alert("Cancelada."); }
+      }));
     });
-    document.querySelectorAll(".cancel-btn").forEach(btn => btn.addEventListener("click", (e) => {
-      const all = getBookings(); const target = all.find(x => x.id === e.target.dataset.id);
-      if(target) { target.status = "Cancelada"; localStorage.setItem("sonia_bookings_v3", JSON.stringify(all)); manageModal.style.display="none"; alert("Cancelada."); }
-    }));
-  });
+  }
 
   /* ===================================================
      12. TEST EMOCIONALES Y RETROALIMENTACIÓN PSICOLÓGICA
@@ -522,19 +563,19 @@ const masterTimeSlots = [
 
   const quizFeedbackMap = {
     individual: {
-      estable: { icon: "🌱", title: "Bienestar Emocional Estable", text: "Muestras un nivel equilibrado de manejo del estrés cotidiano. Tus respuestas reflejan que cuentas con recursos de afrontamiento funcionales. Mantén tus hábitos de autocuidado." },
-      moderado: { icon: "🟡", title: "Nivel de Tensión Moderado", text: "Presentas señales leves o moderadas de agotamiento y preocupación. Es un momento ideal para hacer una pausa, revisar tus espacios de descanso y fortalecer tu regulación emocional." },
-      significativo: { icon: "🌊", title: "Indicadores de Carga Emocional Elevada", text: "Tus respuestas reflejan una carga considerable de estrés o ansiedad que puede estar afectando tu día a día. Te recomendamos contar con un espacio terapéutico guiado para canalizarlo." }
+      estable: { icon: "", title: "Bienestar Emocional Estable", text: "Muestras un nivel equilibrado de manejo del estrés cotidiano. Tus respuestas reflejan que cuentas con recursos de afrontamiento funcionales. Mantén tus hábitos de autocuidado." },
+      moderado: { icon: "", title: "Nivel de Tensión Moderado", text: "Presentas señales leves o moderadas de agotamiento y preocupación. Es un momento ideal para hacer una pausa, revisar tus espacios de descanso y fortalecer tu regulación emocional." },
+      significativo: { icon: "", title: "Indicadores de Carga Emocional Elevada", text: "Tus respuestas reflejan una carga considerable de estrés o ansiedad que puede estar afectando tu día a día. Te recomendamos contar con un espacio terapéutico guiado para canalizarlo." }
     },
     pareja: {
-      estable: { icon: "👩‍❤️‍👨", title: "Dinámica Relacional Saludable", text: "Existe una buena base de comunicación y resolución de conflictos. Mantener el diálogo abierto fortalecerá los acuerdos mutuos a largo plazo." },
-      moderado: { icon: "💬", title: "Fricciones en la Comunicación", text: "Se observan puntos de tensión recurrentes o momentos de distanciamiento afectivo. Trabajar en técnicas de escucha activa puede prevenir desgastes en el vínculo." },
-      significativo: { icon: "🤝", title: "Necesidad de Mediación Profesional", text: "Se identifican desacuerdos intensos y dificultades para alcanzar consensos. Un espacio neutro de terapia de pareja les brindará herramientas para reconstruir la confianza." }
+      estable: { icon: "", title: "Dinámica Relacional Saludable", text: "Existe una buena base de comunicación y resolución de conflictos. Mantener el diálogo abierto fortalecerá los acuerdos mutuos a largo plazo." },
+      moderado: { icon: "", title: "Fricciones en la Comunicación", text: "Se observan puntos de tensión recurrentes o momentos de distanciamiento afectivo. Trabajar en técnicas de escucha activa puede prevenir desgastes en el vínculo." },
+      significativo: { icon: "", title: "Necesidad de Mediación Profesional", text: "Se identifican desacuerdos intensos y dificultades para alcanzar consensos. Un espacio neutro de terapia de pareja les brindará herramientas para reconstruir la confianza." }
     },
     identidad: {
-      estable: { icon: "🌈", title: "Proceso de Autoafirmación Claro", text: "Cuentas con claridad en tu autoaceptación y redes de apoyo saludables. Continúa cultivando espacios donde te sientas plenamente validado(a)." },
-      moderado: { icon: "🔍", title: "Etapa de Autoexploración", text: "Experimentas dudas o cierta aprensión respecto a la aceptación en tus entornos cotidianos. Un acompañamiento empático ayuda a procesar estas transiciones con confianza." },
-      significativo: { icon: "🛡️", title: "Acompañamiento Afirmativo Recomendado", text: "Identificamos sentimientos de aislamiento o tensión respecto a tu expresión e identidad. Contar con un acompañamiento profesional afirmativo reforzará tu autoestima y seguridad." }
+      estable: { icon: "", title: "Proceso de Autoafirmación Claro", text: "Cuentas con claridad en tu autoaceptación y redes de apoyo saludables. Continúa cultivando espacios donde te sientas plenamente validado(a)." },
+      moderado: { icon: "", title: "Etapa de Autoexploración", text: "Experimentas dudas o cierta aprensión respecto a la aceptación en tus entornos cotidianos. Un acompañamiento empático ayuda a procesar estas transiciones con confianza." },
+      significativo: { icon: "", title: "Acompañamiento Afirmativo Recomendado", text: "Identificamos sentimientos de aislamiento o tensión respecto a tu expresión e identidad. Contar con un acompañamiento profesional afirmativo reforzará tu autoestima y seguridad." }
     }
   };
 
@@ -563,59 +604,62 @@ const masterTimeSlots = [
     }
   });
   
-  document.getElementById("closeQuizModal").addEventListener("click", () => quizModal.style.display="none");
+  const closeQuizModal = document.getElementById("closeQuizModal");
+  if (closeQuizModal) closeQuizModal.addEventListener("click", () => quizModal.style.display="none");
 
-  qForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    let score = 0; 
-    for(let v of new FormData(qForm).values()) score += parseInt(v);
+  if (qForm) {
+    qForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let score = 0; 
+      for(let v of new FormData(qForm).values()) score += parseInt(v);
 
-    const rb = document.getElementById("resultLevelBadge");
-    const scorePill = document.getElementById("resultScorePill");
-    const resultTitle = document.getElementById("resultTitle");
-    const resultIcon = document.getElementById("resultIcon");
-    const resultFeedback = document.getElementById("resultFeedback");
+      const rb = document.getElementById("resultLevelBadge");
+      const scorePill = document.getElementById("resultScorePill");
+      const resultTitle = document.getElementById("resultTitle");
+      const resultIcon = document.getElementById("resultIcon");
+      const resultFeedback = document.getElementById("resultFeedback");
 
-    scorePill.textContent = `Puntaje: ${score}/15`;
+      scorePill.textContent = `Puntaje: ${score}/15`;
 
-    let levelKey = "estable";
-    if(score <= 5) { 
-      levelKey = "estable";
-      rb.textContent = "Nivel: Estable"; 
-      rb.style.background = "rgba(46, 125, 50, 0.2)"; 
-      rb.style.color="#81c784"; 
-      rb.style.borderColor = "#2e7d32";
-    } else if(score <= 10) { 
-      levelKey = "moderado";
-      rb.textContent = "Nivel: Moderado"; 
-      rb.style.background = "rgba(245, 127, 23, 0.2)"; 
-      rb.style.color="#fff176"; 
-      rb.style.borderColor = "#f57f17";
-    } else { 
-      levelKey = "significativo";
-      rb.textContent = "Nivel: Elevado / Atención Recomendada"; 
-      rb.style.background = "rgba(198, 40, 40, 0.2)"; 
-      rb.style.color="#e57373"; 
-      rb.style.borderColor = "#c62828";
-    }
+      let levelKey = "estable";
+      if(score <= 5) { 
+        levelKey = "estable";
+        rb.textContent = "Nivel: Estable"; 
+        rb.style.background = "rgba(46, 125, 50, 0.2)"; 
+        rb.style.color="#81c784"; 
+        rb.style.borderColor = "#2e7d32";
+      } else if(score <= 10) { 
+        levelKey = "moderado";
+        rb.textContent = "Nivel: Moderado"; 
+        rb.style.background = "rgba(245, 127, 23, 0.2)"; 
+        rb.style.color="#fff176"; 
+        rb.style.borderColor = "#f57f17";
+      } else { 
+        levelKey = "significativo";
+        rb.textContent = "Nivel: Elevado / Atención Recomendada"; 
+        rb.style.background = "rgba(198, 40, 40, 0.2)"; 
+        rb.style.color="#e57373"; 
+        rb.style.borderColor = "#c62828";
+      }
 
-    const feedbackObj = quizFeedbackMap[currentQuizKey][levelKey];
-    resultTitle.textContent = feedbackObj.title;
-    resultIcon.textContent = feedbackObj.icon;
-    resultFeedback.textContent = feedbackObj.text;
+      const feedbackObj = quizFeedbackMap[currentQuizKey][levelKey];
+      resultTitle.textContent = feedbackObj.title;
+      resultIcon.textContent = feedbackObj.icon;
+      resultFeedback.textContent = feedbackObj.text;
 
-    const testResultsList = JSON.parse(localStorage.getItem("sonia_test_results_v1") || "[]");
-    testResultsList.push({
-      id: "TST-" + Date.now(),
-      tipo: quizData[currentQuizKey].tit,
-      nombre: document.getElementById("quizUserName").value || "Anónimo",
-      email: document.getElementById("quizUserEmail").value || "No proporcionado",
-      puntaje: `${score}/15 (${rb.textContent})`,
-      fecha: new Date().toLocaleDateString()
+      const testResultsList = JSON.parse(localStorage.getItem("sonia_test_results_v1") || "[]");
+      testResultsList.push({
+        id: "TST-" + Date.now(),
+        tipo: quizData[currentQuizKey].tit,
+        nombre: document.getElementById("quizUserName").value || "Anónimo",
+        email: document.getElementById("quizUserEmail").value || "No proporcionado",
+        puntaje: `${score}/15 (${rb.textContent})`,
+        fecha: new Date().toLocaleDateString()
+      });
+      localStorage.setItem("sonia_test_results_v1", JSON.stringify(testResultsList));
+
+      qForm.style.display="none"; 
+      document.getElementById("quizResult").style.display="block";
     });
-    localStorage.setItem("sonia_test_results_v1", JSON.stringify(testResultsList));
-
-    qForm.style.display="none"; 
-    document.getElementById("quizResult").style.display="block";
-  });
+  }
 });
