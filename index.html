@@ -61,6 +61,26 @@
     </div>
   </div>
 
+  <!-- MODAL DE AUTENTICACIÓN DE ADMINISTRADOR (CON ASTERISCOS) -->
+  <div id="adminAuthModal" class="modal-overlay" style="display: none;">
+    <div class="modal-glass-card" style="max-width: 400px;">
+      <div class="modal-header">
+        <div>
+          <h3>Acceso Administrativo</h3>
+          <p class="text-muted text-sm" style="margin-top: 0.2rem;">Ingresa la clave de seguridad para continuar.</p>
+        </div>
+        <button type="button" id="closeAdminAuthModal" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="adminAuthForm">
+          <input type="password" id="adminPasswordInput" placeholder="••••••••" required class="input-field" autocomplete="current-password">
+          <p id="adminAuthError" style="color: #e57373; font-size: 0.82rem; margin-top: 0.5rem; display: none;">Clave incorrecta. Intenta de nuevo.</p>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.2rem;">Ingresar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL UNIFICADO DE ADMINISTRACIÓN -->
   <div id="adminPanelModal" class="modal-overlay" style="display: none;">
     <div class="modal-glass-card">
@@ -89,7 +109,6 @@
           <div class="flex-col">
             <button type="button" id="btnExportCitas" class="btn btn-secondary btn-block">Reporte de Citas (.CSV)</button>
             <button type="button" id="btnExportTest" class="btn btn-secondary btn-block">Resultados de Test (.CSV)</button>
-            <button type="button" id="btnExportBuzon" class="btn btn-secondary btn-block">Mensajes del Buzón (.CSV)</button>
           </div>
         </div>
       </div>
@@ -185,7 +204,7 @@
           </div>
 
           <div class="result-recommendation">
-            <p class="text-muted text-sm"></p> <strong>Recomendación Terapéutica:</strong> Si deseas profundizar en estos resultados con orientación profesional guiada por la Psic. Sonia Vargas, puedes agendar tu sesión a continuación.</p>
+            <p class="text-muted text-sm"><strong>Recomendación Terapéutica:</strong> Si deseas profundizar en estos resultados con orientación profesional guiada por la Psic. Sonia Vargas, puedes agendar tu sesión a continuación.</p>
           </div>
 
           <button type="button" class="btn btn-primary open-booking-btn" style="margin-top: 1.2rem;">Agendar Cita con tus Resultados</button>
@@ -218,24 +237,22 @@
       <!-- MENÚ DE NAVEGACIÓN -->
       <nav class="sidebar-nav" id="sidebarNav">
         <button class="nav-item active" data-target="view-inicio">
-          <span class="icon">🏠</span> <span>Inicio</span>
+          <span class="icon">☕︎</span> <span>Inicio</span>
         </button>
         <button class="nav-item" data-target="view-servicios">
-          <span class="icon">🛋️</span> <span>Servicios</span>
+          <span class="icon">❊</span> <span>Servicios</span>
         </button>
         <button class="nav-item" data-target="view-test">
-          <span class="icon">📋</span> <span>Test</span>
+          <span class="icon">✮</span> <span>Test</span>
         </button>
-
-
         
         <div class="sidebar-footer-mobile">
-          <button id="themeToggleBtnMobile" class="btn-icon" title="Cambiar tema">🌙</button>
+          <button id="themeToggleBtnMobile" class="btn-icon" title="Cambiar tema">☾</button>
         </div>
       </nav>
 
       <div class="sidebar-footer">
-        <button id="themeToggleBtn" class="btn-icon" title="Cambiar tema">🌙</button>
+        <button id="themeToggleBtn" class="btn-icon" title="Cambiar tema">☾</button>
       </div>
     </aside>
 
@@ -471,7 +488,7 @@
         <button id="btnSendChat" class="btn btn-primary" style="padding: 0.5rem 1rem;">➤</button>
       </div>
     </div>
-    <button class="chatbot-toggle" id="chatbotToggle">💬</button>
+    <button class="chatbot-toggle" id="chatbotToggle">✌︎</button>
   </div>
 
   <script src="script.js"></script>
