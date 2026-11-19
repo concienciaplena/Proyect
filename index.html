@@ -75,42 +75,8 @@
         <form id="adminAuthForm">
           <input type="password" id="adminPasswordInput" placeholder="••••••••" required class="input-field" autocomplete="current-password">
           <p id="adminAuthError" style="color: #e57373; font-size: 0.82rem; margin-top: 0.5rem; display: none;">Clave incorrecta. Intenta de nuevo.</p>
-          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.2rem;">Ingresar</button>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.2rem;">Ingresar al Panel</button>
         </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL UNIFICADO DE ADMINISTRACIÓN -->
-  <div id="adminPanelModal" class="modal-overlay" style="display: none;">
-    <div class="modal-glass-card">
-      <div class="modal-header">
-        <h3>⚙️ Panel de Administración</h3>
-        <button type="button" id="closeAdminPanelModal" class="close-btn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
-          <button type="button" id="tabAdminNews" class="btn btn-primary" style="flex:1; font-size: 0.85rem;">Publicar Noticia</button>
-          <button type="button" id="tabAdminExcel" class="btn btn-secondary" style="flex:1; font-size: 0.85rem;">Descargar Reportes</button>
-        </div>
-
-        <div id="sectionAdminNews">
-          <form id="addNewsForm">
-            <input type="text" id="adminNewsCat" placeholder="Categoría (Ej. Bienestar, Pareja)" required class="input-field">
-            <input type="text" id="adminNewsTitle" placeholder="Título de la publicación" required class="input-field" style="margin-top:0.8rem;">
-            <input type="text" id="adminNewsSource" placeholder="Fuente / Autor" required class="input-field" style="margin-top:0.8rem;">
-            <textarea id="adminNewsBody" rows="4" placeholder="Redacta el contenido de la noticia..." required class="input-field" style="margin-top:0.8rem;"></textarea>
-            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.2rem;">Publicar Noticia</button>
-          </form>
-        </div>
-
-        <div id="sectionAdminExcel" style="display: none;">
-          <p class="text-muted text-sm" style="margin-bottom: 1rem;">Exporta los registros estructurados de la plataforma:</p>
-          <div class="flex-col">
-            <button type="button" id="btnExportCitas" class="btn btn-secondary btn-block">Reporte de Citas (.CSV)</button>
-            <button type="button" id="btnExportTest" class="btn btn-secondary btn-block">Resultados de Test (.CSV)</button>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -213,8 +179,298 @@
     </div>
   </div>
 
-  <!-- LAYOUT PRINCIPAL DASHBOARD -->
-  <div class="dashboard-layout">
+  <!-- ===================================================
+       VENTANA EXCLUSIVA DEL ADMINISTRADOR (PANTALLA COMPLETA)
+       =================================================== -->
+  <div id="adminWorkspaceView" class="admin-workspace" style="display: none;">
+    <div class="admin-topbar">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <img src="logo.jpg" alt="Logo" style="width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--accent-bright);">
+        <div>
+          <span class="badge" style="font-size: 0.7rem;">Modo Administrador</span>
+          <h2 style="font-size: 1.3rem; margin-top: 0.2rem;">Centro de Control — Consciencia Plena</h2>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.8rem; align-items: center;">
+        <button type="button" id="adminThemeToggleBtn" class="btn-icon" title="Cambiar tema">☾</button>
+        <button type="button" id="btnExitAdminWorkspace" class="btn btn-secondary">← Volver al Sitio</button>
+      </div>
+    </div>
+
+    <div class="admin-body-layout">
+      <!-- Menú principal de secciones del Admin -->
+      <div class="admin-tabs-bar">
+        <button type="button" class="admin-tab-btn active" data-admintab="admin-tab-stats">📊 Estadísticas de Test</button>
+        <button type="button" class="admin-tab-btn" data-admintab="admin-tab-news">📰 Noticias</button>
+        <button type="button" class="admin-tab-btn" data-admintab="admin-tab-content">✨ Contenido y Servicios</button>
+        <button type="button" class="admin-tab-btn" data-admintab="admin-tab-tests">📝 Editar Preguntas Test</button>
+        <button type="button" class="admin-tab-btn" data-admintab="admin-tab-appearance">🔠 Apariencia y Letra</button>
+        <button type="button" class="admin-tab-btn" data-admintab="admin-tab-reports">📥 Descargar Reportes</button>
+      </div>
+
+      <!-- 1. ESTADÍSTICAS DE INGRESOS A CADA TEST -->
+      <div id="admin-tab-stats" class="admin-tab-panel active">
+        <div class="dash-card">
+          <div class="card-header-flex">
+            <div>
+              <h3 class="card-title" style="margin-bottom: 0.2rem;">Estadísticas de Participación en Test</h3>
+              <p class="text-muted text-sm">Conteo de usuarios que han ingresado a cada cuestionario y evaluaciones completadas.</p>
+            </div>
+            <button type="button" id="btnResetTestStats" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Reiniciar Contadores</button>
+          </div>
+          <div class="admin-stats-grid" id="adminStatsGrid"></div>
+        </div>
+      </div>
+
+      <!-- 2. PUBLICAR, EDITAR Y ELIMINAR NOTICIAS -->
+      <div id="admin-tab-news" class="admin-tab-panel">
+        <div class="grid-2" style="align-items: start;">
+          <div class="dash-card">
+            <h3 class="card-title" id="newsFormHeading">Publicar Nueva Noticia</h3>
+            <form id="addNewsForm">
+              <input type="hidden" id="editNewsIndex" value="-1">
+              <label class="text-sm text-muted">Categoría</label>
+              <input type="text" id="adminNewsCat" placeholder="Ej. Bienestar, Pareja, Identidad" required class="input-field" style="margin-top:0.3rem; margin-bottom:0.8rem;">
+              
+              <label class="text-sm text-muted">Título de la publicación</label>
+              <input type="text" id="adminNewsTitle" placeholder="Título atractivo" required class="input-field" style="margin-top:0.3rem; margin-bottom:0.8rem;">
+              
+              <label class="text-sm text-muted">Fuente / Autor</label>
+              <input type="text" id="adminNewsSource" placeholder="Ej. Psic. Sonia Vargas" required class="input-field" style="margin-top:0.3rem; margin-bottom:0.8rem;">
+              
+              <label class="text-sm text-muted">Contenido completo</label>
+              <textarea id="adminNewsBody" rows="5" placeholder="Redacta el artículo completo..." required class="input-field" style="margin-top:0.3rem;"></textarea>
+              
+              <div style="display: flex; gap: 0.6rem; margin-top: 1.2rem;">
+                <button type="submit" id="btnSubmitNews" class="btn btn-primary" style="flex: 1;">Publicar Noticia</button>
+                <button type="button" id="btnCancelEditNews" class="btn btn-secondary" style="display: none;">Cancelar</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="dash-card">
+            <h3 class="card-title">Noticias Publicadas Actualmente</h3>
+            <p class="text-muted text-sm" style="margin-bottom: 1rem;">Puedes editar o eliminar cualquier artículo del carrusel.</p>
+            <div id="adminNewsListContainer" class="flex-col"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. GESTIÓN DE CONTENIDO: CHECK-IN, REFLEXIONES, PÍLDORAS Y SERVICIOS -->
+      <div id="admin-tab-content" class="admin-tab-panel">
+        <div class="dash-card">
+          <div class="card-header-flex" style="flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+            <div>
+              <h3 class="card-title" style="margin-bottom: 0.2rem;">Editor de Secciones del Portal</h3>
+              <p class="text-muted text-sm">Personaliza los mensajes terapéuticos, píldoras y catálogo de servicios.</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary content-subtab-btn" data-subtab="subtab-services">Servicios</button>
+              <button type="button" class="btn btn-secondary content-subtab-btn" data-subtab="subtab-pills">Píldoras Psicoeducación</button>
+              <button type="button" class="btn btn-secondary content-subtab-btn" data-subtab="subtab-quotes">Reflexión Diaria</button>
+              <button type="button" class="btn btn-secondary content-subtab-btn" data-subtab="subtab-checkin">Check-In Emocional</button>
+            </div>
+          </div>
+
+          <!-- SUB-PESTAÑA A: SERVICIOS -->
+          <div id="subtab-services" class="content-subtab-panel">
+            <div class="grid-2" style="align-items: start;">
+              <div class="legal-box" style="padding: 1.3rem; border-radius: 16px;">
+                <h4 id="serviceFormHeading" style="margin-bottom: 0.8rem;">Agregar Nuevo Servicio</h4>
+                <form id="adminServiceForm">
+                  <input type="hidden" id="editServiceIndex" value="-1">
+                  <label class="text-sm text-muted">Nombre del Servicio</label>
+                  <input type="text" id="adminServiceTitle" placeholder="Ej. Terapia Familiar" required class="input-field" style="margin-top:0.3rem; margin-bottom:0.8rem;">
+                  
+                  <label class="text-sm text-muted">Descripción del enfoque</label>
+                  <textarea id="adminServiceDesc" rows="4" placeholder="Describe en qué consiste este servicio..." required class="input-field" style="margin-top:0.3rem;"></textarea>
+                  
+                  <div style="display: flex; gap: 0.6rem; margin-top: 1rem;">
+                    <button type="submit" id="btnSubmitService" class="btn btn-primary" style="flex: 1;">Agregar Servicio</button>
+                    <button type="button" id="btnCancelEditService" class="btn btn-secondary" style="display: none;">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <h4 style="margin-bottom: 0.8rem;">Servicios Activos en el Catálogo</h4>
+                <div id="adminServicesList" class="flex-col"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-PESTAÑA B: PÍLDORAS DE PSICOEDUCACIÓN -->
+          <div id="subtab-pills" class="content-subtab-panel" style="display: none;">
+            <div class="grid-2" style="align-items: start;">
+              <div class="legal-box" style="padding: 1.3rem; border-radius: 16px;">
+                <h4 id="pillFormHeading" style="margin-bottom: 0.8rem;">Agregar Nueva Píldora</h4>
+                <form id="adminPillForm">
+                  <input type="hidden" id="editPillIndex" value="-1">
+                  <label class="text-sm text-muted">Título de la Píldora</label>
+                  <input type="text" id="adminPillTitle" placeholder="Ej. Higiene del Sueño" required class="input-field" style="margin-top:0.3rem; margin-bottom:0.8rem;">
+                  
+                  <label class="text-sm text-muted">Contenido / Técnica breve</label>
+                  <textarea id="adminPillText" rows="4" placeholder="Redacta el consejo práctico..." required class="input-field" style="margin-top:0.3rem;"></textarea>
+                  
+                  <div style="display: flex; gap: 0.6rem; margin-top: 1rem;">
+                    <button type="submit" id="btnSubmitPill" class="btn btn-primary" style="flex: 1;">Agregar Píldora</button>
+                    <button type="button" id="btnCancelEditPill" class="btn btn-secondary" style="display: none;">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <h4 style="margin-bottom: 0.8rem;">Píldoras Publicadas</h4>
+                <div id="adminPillsList" class="flex-col"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-PESTAÑA C: REFLEXIÓN DIARIA -->
+          <div id="subtab-quotes" class="content-subtab-panel" style="display: none;">
+            <div class="grid-2" style="align-items: start;">
+              <div class="legal-box" style="padding: 1.3rem; border-radius: 16px;">
+                <h4 id="quoteFormHeading" style="margin-bottom: 0.8rem;">Agregar Nueva Reflexión</h4>
+                <form id="adminQuoteForm">
+                  <input type="hidden" id="editQuoteIndex" value="-1">
+                  <label class="text-sm text-muted">Frase o Reflexión</label>
+                  <textarea id="adminQuoteBody" rows="3" placeholder="Escribe la frase reflexiva..." required class="input-field" style="margin-top:0.3rem; margin-bottom:0.8rem;"></textarea>
+                  
+                  <label class="text-sm text-muted">Autor o Enfoque</label>
+                  <input type="text" id="adminQuoteAuthor" placeholder="Ej. Psic. Sonia Vargas" required class="input-field" style="margin-top:0.3rem;">
+                  
+                  <div style="display: flex; gap: 0.6rem; margin-top: 1rem;">
+                    <button type="submit" id="btnSubmitQuote" class="btn btn-primary" style="flex: 1;">Agregar Reflexión</button>
+                    <button type="button" id="btnCancelEditQuote" class="btn btn-secondary" style="display: none;">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <h4 style="margin-bottom: 0.8rem;">Reflexiones en Rotación</h4>
+                <div id="adminQuotesList" class="flex-col"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-PESTAÑA D: CHECK-IN EMOCIONAL DIDÁCTICO -->
+          <div id="subtab-checkin" class="content-subtab-panel" style="display: none;">
+            <div class="grid-2" style="align-items: start;">
+              <div class="legal-box" style="padding: 1.3rem; border-radius: 16px;">
+                <h4 id="moodFormHeading" style="margin-bottom: 0.8rem;">Agregar Estado Emocional</h4>
+                <form id="adminMoodForm">
+                  <input type="hidden" id="editMoodIndex" value="-1">
+                  
+                  <label class="text-sm text-muted">Etiqueta del botón (Estado de ánimo)</label>
+                  <input type="text" id="adminMoodLabelInput" placeholder="Ej. Motivado(a), Enojado(a)" required class="input-field" style="margin-top:0.3rem; margin-bottom:0.8rem;">
+
+                  <label class="text-sm text-muted">Título de la recomendación</label>
+                  <input type="text" id="adminMoodTitleInput" placeholder="Ej. Canalización de Energía" required class="input-field" style="margin-top:0.3rem; margin-bottom:0.8rem;">
+                  
+                  <label class="text-sm text-muted">Mensaje didáctico para el paciente</label>
+                  <textarea id="adminMoodTextInput" rows="4" placeholder="Redacta el consejo terapéutico..." required class="input-field" style="margin-top:0.3rem;"></textarea>
+                  
+                  <div style="display: flex; gap: 0.6rem; margin-top: 1rem;">
+                    <button type="submit" id="btnSubmitMood" class="btn btn-primary" style="flex: 1;">Agregar Estado</button>
+                    <button type="button" id="btnCancelEditMood" class="btn btn-secondary" style="display: none;">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <h4 style="margin-bottom: 0.8rem;">Estados Emocionales Activos</h4>
+                <div id="adminMoodsList" class="flex-col"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 4. MODIFICAR PREGUNTAS DE TODOS LOS TEST -->
+      <div id="admin-tab-tests" class="admin-tab-panel">
+        <div class="dash-card">
+          <div class="card-header-flex" style="flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3 class="card-title" style="margin-bottom: 0.2rem;">Editor de Cuestionarios</h3>
+              <p class="text-muted text-sm">Selecciona un test para editar, agregar o quitar preguntas. El puntaje máximo se ajusta automáticamente.</p>
+            </div>
+            <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+              <select id="adminSelectQuizType" class="input-field" style="width: auto; min-width: 210px;">
+                <option value="individual">Test Individual</option>
+                <option value="pareja">Test de Pareja</option>
+                <option value="identidad">Test de Identidad</option>
+              </select>
+              <button type="button" id="btnRestoreDefaultQuiz" class="btn btn-secondary" style="font-size: 0.8rem;">Restaurar Originales</button>
+            </div>
+          </div>
+
+          <form id="adminEditQuizForm" style="margin-top: 1rem;">
+            <div id="adminQuizQuestionsFields" class="flex-col"></div>
+            
+            <div style="display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap;">
+              <button type="button" id="btnAddQuizQuestion" class="btn btn-secondary">+ Agregar Pregunta</button>
+              <button type="submit" class="btn btn-primary">Guardar Cambios del Test</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- 5. AGRANDAR O ACHICAR EL TIPO DE LETRA EN TODA LA PÁGINA -->
+      <div id="admin-tab-appearance" class="admin-tab-panel">
+        <div class="dash-card" style="max-width: 680px;">
+          <h3 class="card-title" style="margin-bottom: 0.4rem;">Tamaño de Tipografía Global</h3>
+          <p class="text-muted text-sm" style="margin-bottom: 1.5rem;">Ajusta la escala del texto para toda la plataforma. Este ajuste se aplica a todas las vistas, tarjetas y ventanas.</p>
+
+          <div class="font-control-box">
+            <button type="button" id="btnFontDecrease" class="btn btn-secondary" style="font-size: 1.1rem; padding: 0.7rem 1.3rem;">A- Achicar</button>
+            <div style="text-align: center;">
+              <strong id="fontScaleDisplay" style="font-size: 1.5rem; color: var(--accent-bright);">100%</strong>
+              <p class="text-muted" style="font-size: 0.78rem;">Escala actual</p>
+            </div>
+            <button type="button" id="btnFontIncrease" class="btn btn-primary" style="font-size: 1.1rem; padding: 0.7rem 1.3rem;">A+ Agrandar</button>
+          </div>
+
+          <div style="margin-top: 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <button type="button" id="btnFontReset" class="btn-text">Restablecer tamaño normal (100%)</button>
+            <span class="text-muted text-sm">Vista previa en tiempo real activa</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. DESCARGAR REPORTES CSV / EXCEL -->
+      <div id="admin-tab-reports" class="admin-tab-panel">
+        <div class="dash-card" style="max-width: 680px;">
+          <h3 class="card-title" style="margin-bottom: 0.4rem;">Exportación de Bases de Datos (.CSV)</h3>
+          <p class="text-muted text-sm" style="margin-bottom: 1.5rem;">Descarga los registros almacenados compatibles con Microsoft Excel y Google Sheets.</p>
+          
+          <div class="grid-2">
+            <div class="legal-box" style="padding: 1.2rem; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4>Agenda de Citas</h4>
+                <p class="text-muted text-sm" style="margin: 0.5rem 0 1rem 0;">Incluye folios, fechas, horarios, nombres, correos, motivos y estatus.</p>
+              </div>
+              <button type="button" id="btnExportCitas" class="btn btn-primary btn-block">Descargar Citas (.CSV)</button>
+            </div>
+
+            <div class="legal-box" style="padding: 1.2rem; border-radius: 16px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4>Resultados de Test</h4>
+                <p class="text-muted text-sm" style="margin: 0.5rem 0 1rem 0;">Incluye tipo de test, participante, correo, puntaje obtenido y nivel.</p>
+              </div>
+              <button type="button" id="btnExportTest" class="btn btn-primary btn-block">Descargar Test (.CSV)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================
+       LAYOUT PRINCIPAL DASHBOARD PÚBLICO
+       =================================================== -->
+  <div class="dashboard-layout" id="publicDashboardLayout">
     
     <!-- Sidebar / Topbar en Móvil -->
     <aside class="sidebar">
@@ -306,13 +562,7 @@
             </div>
             <p class="text-muted text-sm" style="margin-bottom: 1rem;">Haz clic en tu estado de ánimo para recibir una recomendación terapéutica inmediata:</p>
             
-            <div class="mood-selector">
-              <button class="mood-btn" data-mood="tranquilo">Tranquilo(a)</button>
-              <button class="mood-btn" data-mood="ansioso">Ansioso(a)</button>
-              <button class="mood-btn" data-mood="triste">Triste</button>
-              <button class="mood-btn" data-mood="energia">Con energía</button>
-              <button class="mood-btn" data-mood="abrumado">Abrumado(a)</button>
-            </div>
+            <div class="mood-selector" id="publicMoodSelector"></div>
 
             <div id="moodFeedback" class="mood-feedback-box" style="display: none;">
               <div class="mood-feedback-content">
@@ -337,32 +587,10 @@
             </div>
           </div>
 
-          <!-- Píldoras de Psicoeducación -->
+          <!-- Píldoras de Psicoeducación (Dinámicas) -->
           <div class="dash-card span-full">
             <h3 class="card-title" style="margin-bottom: 1rem;">Píldoras de Psicoeducación</h3>
-            <div class="psycho-pills-grid">
-              <div class="psycho-pill-card">
-                <span class="pill-icon"></span>
-                <div>
-                  <strong>Regulación Respiratoria 4-7-8</strong>
-                  <p class="text-muted text-sm" style="margin-top:0.3rem;">Inhala en 4 segundos, sostén 7 segundos y exhala suavemente en 8 para desactivar el estrés.</p>
-                </div>
-              </div>
-              <div class="psycho-pill-card">
-                <span class="pill-icon"></span>
-                <div>
-                  <strong>Técnica de Anclaje 5-4-3-2-1</strong>
-                  <p class="text-muted text-sm" style="margin-top:0.3rem;">Ante la ansiedad: observa 5 objetos, toca 4 texturas, escucha 3 sonidos, huele 2 aromas y prueba 1 sabor.</p>
-                </div>
-              </div>
-              <div class="psycho-pill-card">
-                <span class="pill-icon"></span>
-                <div>
-                  <strong>Validación Emocional</strong>
-                  <p class="text-muted text-sm" style="margin-top:0.3rem;">Todas las emociones cumplen una función adaptativa. Sentir enojo o tristeza no te hace débil.</p>
-                </div>
-              </div>
-            </div>
+            <div class="psycho-pills-grid" id="publicPsychoPillsGrid"></div>
           </div>
 
           <!-- Noticias y Carrusel Automático -->
@@ -389,41 +617,13 @@
         </div>
       </div>
 
-      <!-- VISTA 2: SERVICIOS -->
+      <!-- VISTA 2: SERVICIOS (Dinámica) -->
       <div id="view-servicios" class="page-view">
         <div class="dash-card span-full">
           <h3 class="card-title">Catálogo Completo de Servicios Terapéuticos</h3>
           <p class="text-muted" style="margin-bottom: 2rem;">Ofrecemos enfoques personalizados ajustados a tus requerimientos emocionales.</p>
 
-          <div class="services-subpage-grid">
-            <div class="service-card-expanded">
-              <span class="service-icon-lg"></span>
-              <h4>Terapia Individual</h4>
-              <p class="text-muted text-sm" style="margin: 0.8rem 0;">Acompañamiento especializado para el manejo del estrés, ansiedad, desarrollo de autoestima y superación de bloqueos emocionales.</p>
-              <button class="btn btn-primary open-booking-btn">Solicitar Consulta</button>
-            </div>
-
-            <div class="service-card-expanded">
-              <span class="service-icon-lg"></span>
-              <h4>Terapia de Pareja</h4>
-              <p class="text-muted text-sm" style="margin: 0.8rem 0;">Espacio neutral para fortalecer la comunicación asertiva, resolución pacífica de conflictos y reconstrucción de acuerdos mutuos.</p>
-              <button class="btn btn-primary open-booking-btn">Solicitar Consulta</button>
-            </div>
-
-            <div class="service-card-expanded">
-              <span class="service-icon-lg"></span>
-              <h4>Identidad & Duelo</h4>
-              <p class="text-muted text-sm" style="margin: 0.8rem 0;">Acompañamiento afirmativo, empático y profesional en procesos de transición de vida, pérdidas significativas e identidad personal.</p>
-              <button class="btn btn-primary open-booking-btn">Solicitar Consulta</button>
-            </div>
-
-            <div class="service-card-expanded">
-              <span class="service-icon-lg"></span>
-              <h4>Manejo de Ansiedad</h4>
-              <p class="text-muted text-sm" style="margin: 0.8rem 0;">Técnicas cognitivo-conductuales y regulación somática para recuperar el control sobre pensamientos intrusivos y tensión.</p>
-              <button class="btn btn-primary open-booking-btn">Solicitar Consulta</button>
-            </div>
-          </div>
+          <div class="services-subpage-grid" id="publicServicesGrid"></div>
         </div>
       </div>
 
@@ -474,7 +674,7 @@
   </div>
 
   <!-- CHATBOT FLOTANTE -->
-  <div class="chatbot-wrapper">
+  <div class="chatbot-wrapper" id="chatbotWrapper">
     <div class="chatbot-window" id="chatbotWindow" style="display: none;">
       <div class="chatbot-header">
         <strong>Asistente Virtual</strong>
